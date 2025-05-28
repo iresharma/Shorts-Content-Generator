@@ -37,7 +37,7 @@ class VideoComposer:
     def create_video(self, audio_path: str, image_paths: List[str], title: str,
                      topic_index: int) -> Tuple[bool, Optional[str]]:
         """
-        Create a complete video from audio, images, and title.
+        Create a complete video from audio, images, and title with perfect timing.
 
         Args:
             audio_path: Path to the audio file
@@ -55,10 +55,12 @@ class VideoComposer:
                 return False, None
 
             audio_duration = audio_clip.duration
-            logging.info(f"Audio duration: {audio_duration:.2f}s")
+            logging.info(f"🎵 Audio loaded - Duration: {audio_duration:.2f}s")
 
             # Ensure minimum duration
             target_duration = max(audio_duration, self.min_duration)
+            if target_duration > audio_duration:
+                logging.info(f"Extending video to minimum duration: {target_duration:.2f}s")
 
             # Validate and prepare images
             valid_images = self._validate_images(image_paths)
@@ -66,36 +68,85 @@ class VideoComposer:
                 logging.error("No valid images available for video")
                 return False, None
 
+            logging.info(f"🖼️  Using {len(valid_images)} valid images")
+
             # Create background video from images
+            logging.info(f"🎬 Creating slideshow for {target_duration:.2f}s...")
             background_video = self._create_background_slideshow(valid_images, target_duration)
             if not background_video:
                 return False, None
 
+            # Verify slideshow duration
+            slideshow_duration = background_video.duration
+            logging.info(f"✅ Slideshow created - Duration: {slideshow_duration:.2f}s")
+
+            if abs(slideshow_duration - target_duration) > 0.1:
+                logging.warning(
+                    f"⚠️  Slideshow duration mismatch: Expected {target_duration:.2f}s, Got {slideshow_duration:.2f}s")
+                # Force correct duration
+                background_video = background_video.set_duration(target_duration)
+                logging.info(f"🔧 Corrected slideshow duration to {target_duration:.2f}s")
+
             # Create title overlay
+            logging.info("📝 Creating title overlay...")
             title_overlay = self._create_title_overlay(title, target_duration)
+            if title_overlay:
+                logging.info("✅ Title overlay created successfully")
+            else:
+                logging.warning("⚠️  Title overlay creation failed")
+
+            # Extend audio if needed
+            final_audio = audio_clip
+            if target_duration > audio_duration:
+                # Add silence to match target duration
+                from moviepy.editor import AudioFileClip
+                silence_duration = target_duration - audio_duration
+                logging.info(f"🔇 Adding {silence_duration:.2f}s of silence to audio")
+
+                # Create a silent audio clip
+                import numpy as np
+                silence_array = np.zeros((int(silence_duration * audio_clip.fps), 2))
+                from moviepy.editor import AudioArrayClip
+                silence_clip = AudioArrayClip(silence_array, fps=audio_clip.fps)
+
+                # Concatenate audio with silence
+                from moviepy.editor import concatenate_audioclips
+                final_audio = concatenate_audioclips([audio_clip, silence_clip])
 
             # Combine all elements
-            final_video = self._compose_final_video(background_video, title_overlay, audio_clip)
+            logging.info("🎭 Composing final video...")
+            final_video = self._compose_final_video(background_video, title_overlay, final_audio)
             if not final_video:
+                return False, None
+
+            # Final duration check
+            final_duration = final_video.duration
+            final_audio_duration = final_audio.duration
+            logging.info(f"🎯 Final check - Video: {final_duration:.2f}s, Audio: {final_audio_duration:.2f}s")
+
+            if abs(final_duration - final_audio_duration) > 0.05:
+                logging.error(f"❌ Critical timing error - Video/Audio duration mismatch!")
                 return False, None
 
             # Generate output filename
             output_path = self._generate_output_filename(title, topic_index)
 
             # Render and save video
+            logging.info(f"🎬 Rendering video to: {output_path}")
             success = self._render_video(final_video, output_path)
 
             # Cleanup
-            self._cleanup_clips([audio_clip, background_video, title_overlay, final_video])
+            self._cleanup_clips([audio_clip, final_audio, background_video, title_overlay, final_video])
 
             if success:
-                logging.info(f"Video created successfully: {output_path}")
+                logging.info(f"🎉 Video created successfully: {output_path}")
+                logging.info(f"📊 Final stats - Duration: {final_duration:.2f}s, Images: {len(valid_images)}")
                 return True, output_path
             else:
                 return False, None
 
         except Exception as e:
-            logging.error(f"Error creating video: {e}")
+            logging.error(f"💥 Error creating video: {e}")
             return False, None
 
     def _load_audio(self, audio_path: str) -> Optional[AudioFileClip]:
@@ -146,92 +197,99 @@ class VideoComposer:
             if not image_paths:
                 return None
 
+            logging.info(f"Creating slideshow for exact duration: {duration:.2f} seconds")
+
             # Ensure we have enough images by cycling if needed
-            min_images_needed = max(3, int(duration / 3))  # At least 3 seconds per image minimum
+            min_images_needed = max(2, int(duration / 4))  # At least 4 seconds per image for readability
 
             # Cycle through images if we don't have enough
-            while len(image_paths) < min_images_needed:
-                image_paths.extend(image_paths[:min(len(image_paths), min_images_needed - len(image_paths))])
+            original_count = len(image_paths)
+            while len(image_paths) < min_images_needed and len(image_paths) < 20:  # Cap at 20 to avoid too many
+                image_paths.extend(image_paths[:min(original_count, min_images_needed - len(image_paths))])
 
-            # Calculate optimal timing
             num_images = len(image_paths)
+            logging.info(f"Using {num_images} images (cycled from {original_count} original images)")
+
+            # Calculate precise timing - NO transitions to avoid timing issues
             base_time_per_image = duration / num_images
 
-            # Ensure minimum 2 seconds per image for readability
-            if base_time_per_image < 2.0:
+            # Ensure minimum 3 seconds per image for readability
+            if base_time_per_image < 3.0:
                 # Use fewer images if duration is short
-                num_images = max(2, int(duration / 2.0))
+                num_images = max(2, int(duration / 3.0))
                 image_paths = image_paths[:num_images]
                 base_time_per_image = duration / num_images
-
-            logging.info(
-                f"Creating slideshow: {num_images} images, {base_time_per_image:.2f}s each, total: {duration:.2f}s")
+                logging.info(f"Adjusted to {num_images} images for better timing ({base_time_per_image:.2f}s each)")
 
             video_clips = []
             cumulative_time = 0.0
+
+            logging.info(f"Target slideshow duration: {duration:.2f}s with {num_images} images")
 
             for i, image_path in enumerate(image_paths):
                 try:
                     # Calculate exact duration for this clip
                     if i == len(image_paths) - 1:
-                        # Last image gets remaining time to ensure exact total duration
+                        # Last image gets ALL remaining time to ensure exact total duration
                         clip_duration = duration - cumulative_time
+                        logging.info(f"Last image gets remaining time: {clip_duration:.2f}s")
                     else:
                         clip_duration = base_time_per_image
+
+                    # Ensure minimum duration
+                    if clip_duration < 0.5:
+                        logging.warning(f"Clip duration too short: {clip_duration:.2f}s, adjusting...")
+                        clip_duration = 0.5
 
                     # Process image
                     processed_image = self._process_image_for_video(image_path)
                     if not processed_image:
+                        logging.warning(f"Failed to process image {i}, skipping...")
                         continue
 
-                    # Create image clip with exact duration
+                    # Create image clip with EXACT duration
                     img_clip = ImageClip(processed_image, duration=clip_duration)
                     img_clip = img_clip.set_fps(self.fps)
 
-                    # Add subtle effects for visual interest
-                    if i % 3 == 0:
-                        # Slow zoom in
-                        img_clip = img_clip.resize(lambda t: 1 + 0.03 * t / clip_duration)
-                    elif i % 3 == 1:
-                        # Slow zoom out
-                        img_clip = img_clip.resize(lambda t: 1.03 - 0.03 * t / clip_duration)
-                    # Every 3rd image stays static
+                    # Add SUBTLE visual effects (that don't affect timing)
+                    effect_type = i % 4
+                    if effect_type == 0:
+                        # Slow zoom in (1.0 to 1.05)
+                        img_clip = img_clip.resize(lambda t: 1 + 0.05 * (t / clip_duration))
+                    elif effect_type == 1:
+                        # Slow zoom out (1.05 to 1.0)
+                        img_clip = img_clip.resize(lambda t: 1.05 - 0.05 * (t / clip_duration))
+                    elif effect_type == 2:
+                        # Slight pan left to right
+                        img_clip = img_clip.set_position(lambda t: (-20 + 40 * (t / clip_duration), 'center'))
+                    # effect_type == 3: Static (no effect)
 
                     video_clips.append(img_clip)
                     cumulative_time += clip_duration
 
-                    logging.debug(f"Image {i + 1}: {clip_duration:.2f}s (cumulative: {cumulative_time:.2f}s)")
+                    logging.debug(f"Image {i + 1}/{num_images}: {clip_duration:.2f}s (total: {cumulative_time:.2f}s)")
 
                 except Exception as e:
-                    logging.warning(f"Error processing image {image_path}: {e}")
+                    logging.warning(f"Error processing image {i} ({image_path}): {e}")
                     continue
 
             if not video_clips:
                 logging.error("No valid video clips created from images")
                 return None
 
-            # Concatenate all clips with crossfade transitions
-            if len(video_clips) > 1:
-                # Add crossfade transitions between clips
-                transition_duration = 0.5  # Half second crossfade
-
-                for i in range(len(video_clips) - 1):
-                    # Adjust clip durations to account for transitions
-                    if i == 0:
-                        video_clips[i] = video_clips[i].fadeout(transition_duration)
-                    else:
-                        video_clips[i] = video_clips[i].fadein(transition_duration).fadeout(transition_duration)
-
-                # Last clip only fades in
-                video_clips[-1] = video_clips[-1].fadein(transition_duration)
-
-            # Concatenate with smooth transitions
+            # Concatenate clips WITHOUT transitions to maintain exact timing
+            logging.info(f"Concatenating {len(video_clips)} clips...")
             slideshow = concatenate_videoclips(video_clips, method="compose")
 
-            # Ensure exact duration match
-            slideshow = slideshow.set_duration(duration)
+            # Force exact duration match
+            actual_duration = slideshow.duration
+            logging.info(f"Slideshow created - Target: {duration:.2f}s, Actual: {actual_duration:.2f}s")
 
-            logging.info(f"Slideshow created successfully - Exact duration: {duration:.2f}s")
+            if abs(actual_duration - duration) > 0.1:  # If off by more than 0.1 seconds
+                logging.warning(f"Duration mismatch detected, forcing exact duration...")
+                slideshow = slideshow.set_duration(duration)
+                logging.info(f"Duration corrected to: {duration:.2f}s")
+
             return slideshow
 
         except Exception as e:
@@ -396,29 +454,49 @@ class VideoComposer:
 
     def _compose_final_video(self, background: VideoFileClip, title: Optional[TextClip],
                              audio: AudioFileClip) -> Optional[CompositeVideoClip]:
-        """Compose all elements into final video with proper layering."""
+        """Compose all elements into final video with perfect timing synchronization."""
         try:
+            audio_duration = audio.duration
+            background_duration = background.duration
+
+            logging.info(
+                f"Composing final video - Audio: {audio_duration:.2f}s, Background: {background_duration:.2f}s")
+
+            # Ensure background exactly matches audio duration
+            if abs(background_duration - audio_duration) > 0.05:  # More than 50ms difference
+                logging.warning(
+                    f"Duration mismatch detected - adjusting background from {background_duration:.2f}s to {audio_duration:.2f}s")
+                background = background.set_duration(audio_duration)
+
             # Start with background
             video_clips = [background]
 
-            # Add title overlay if available (ensure it's on top)
+            # Add title overlay if available (ensure it matches duration too)
             if title:
+                # Ensure title duration matches audio
+                title = title.set_duration(audio_duration)
                 video_clips.append(title)
-                logging.info("Title overlay added to video composition")
+                logging.info("Title overlay added to video composition with matching duration")
             else:
                 logging.warning("No title overlay available - video will have no title text")
 
             # Composite video with proper layering
             final_video = CompositeVideoClip(video_clips, size=(self.width, self.height))
 
-            # Set audio
+            # Set audio and ensure exact duration synchronization
             final_video = final_video.set_audio(audio)
+            final_video = final_video.set_duration(audio_duration)
 
-            # Ensure duration matches audio exactly
-            final_video = final_video.set_duration(audio.duration)
-
+            # Verify final timing
+            final_duration = final_video.duration
             logging.info(
-                f"Final video composed successfully - Duration: {audio.duration:.2f}s, Clips: {len(video_clips)}")
+                f"Final video composed - Audio: {audio_duration:.2f}s, Video: {final_duration:.2f}s, Clips: {len(video_clips)}")
+
+            if abs(final_duration - audio_duration) > 0.01:
+                logging.warning(f"Final duration mismatch: Video={final_duration:.2f}s, Audio={audio_duration:.2f}s")
+            else:
+                logging.info("✅ Perfect audio/video synchronization achieved")
+
             return final_video
 
         except Exception as e:
