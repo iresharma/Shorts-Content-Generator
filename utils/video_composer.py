@@ -141,41 +141,66 @@ class VideoComposer:
         return valid_images
 
     def _create_background_slideshow(self, image_paths: List[str], duration: float) -> Optional[VideoFileClip]:
-        """Create a slideshow video from background images."""
+        """Create a slideshow video from background images that exactly matches audio duration."""
         try:
             if not image_paths:
                 return None
 
-            # Calculate timing
-            num_images = len(image_paths)
-            time_per_image = duration / num_images
+            # Ensure we have enough images by cycling if needed
+            min_images_needed = max(3, int(duration / 3))  # At least 3 seconds per image minimum
 
-            # Ensure minimum time per image
-            if time_per_image < 2.0:
-                # If too fast, cycle through images multiple times
-                cycles_needed = math.ceil(2.0 / time_per_image)
-                image_paths = image_paths * cycles_needed
-                num_images = len(image_paths)
-                time_per_image = duration / num_images
+            # Cycle through images if we don't have enough
+            while len(image_paths) < min_images_needed:
+                image_paths.extend(image_paths[:min(len(image_paths), min_images_needed - len(image_paths))])
+
+            # Calculate optimal timing
+            num_images = len(image_paths)
+            base_time_per_image = duration / num_images
+
+            # Ensure minimum 2 seconds per image for readability
+            if base_time_per_image < 2.0:
+                # Use fewer images if duration is short
+                num_images = max(2, int(duration / 2.0))
+                image_paths = image_paths[:num_images]
+                base_time_per_image = duration / num_images
+
+            logging.info(
+                f"Creating slideshow: {num_images} images, {base_time_per_image:.2f}s each, total: {duration:.2f}s")
 
             video_clips = []
+            cumulative_time = 0.0
 
             for i, image_path in enumerate(image_paths):
                 try:
+                    # Calculate exact duration for this clip
+                    if i == len(image_paths) - 1:
+                        # Last image gets remaining time to ensure exact total duration
+                        clip_duration = duration - cumulative_time
+                    else:
+                        clip_duration = base_time_per_image
+
                     # Process image
                     processed_image = self._process_image_for_video(image_path)
                     if not processed_image:
                         continue
 
-                    # Create image clip
-                    img_clip = ImageClip(processed_image, duration=time_per_image)
+                    # Create image clip with exact duration
+                    img_clip = ImageClip(processed_image, duration=clip_duration)
                     img_clip = img_clip.set_fps(self.fps)
 
-                    # Add subtle zoom effect for visual interest
-                    if i % 2 == 0:
-                        img_clip = img_clip.resize(lambda t: 1 + 0.05 * t / time_per_image)
+                    # Add subtle effects for visual interest
+                    if i % 3 == 0:
+                        # Slow zoom in
+                        img_clip = img_clip.resize(lambda t: 1 + 0.03 * t / clip_duration)
+                    elif i % 3 == 1:
+                        # Slow zoom out
+                        img_clip = img_clip.resize(lambda t: 1.03 - 0.03 * t / clip_duration)
+                    # Every 3rd image stays static
 
                     video_clips.append(img_clip)
+                    cumulative_time += clip_duration
+
+                    logging.debug(f"Image {i + 1}: {clip_duration:.2f}s (cumulative: {cumulative_time:.2f}s)")
 
                 except Exception as e:
                     logging.warning(f"Error processing image {image_path}: {e}")
@@ -185,11 +210,28 @@ class VideoComposer:
                 logging.error("No valid video clips created from images")
                 return None
 
-            # Concatenate all clips
+            # Concatenate all clips with crossfade transitions
+            if len(video_clips) > 1:
+                # Add crossfade transitions between clips
+                transition_duration = 0.5  # Half second crossfade
+
+                for i in range(len(video_clips) - 1):
+                    # Adjust clip durations to account for transitions
+                    if i == 0:
+                        video_clips[i] = video_clips[i].fadeout(transition_duration)
+                    else:
+                        video_clips[i] = video_clips[i].fadein(transition_duration).fadeout(transition_duration)
+
+                # Last clip only fades in
+                video_clips[-1] = video_clips[-1].fadein(transition_duration)
+
+            # Concatenate with smooth transitions
             slideshow = concatenate_videoclips(video_clips, method="compose")
+
+            # Ensure exact duration match
             slideshow = slideshow.set_duration(duration)
 
-            logging.info(f"Created slideshow with {len(video_clips)} clips, duration: {duration:.2f}s")
+            logging.info(f"Slideshow created successfully - Exact duration: {duration:.2f}s")
             return slideshow
 
         except Exception as e:
