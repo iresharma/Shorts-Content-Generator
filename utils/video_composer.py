@@ -280,70 +280,145 @@ class VideoComposer:
             return None
 
     def _create_title_overlay(self, title: str, duration: float) -> Optional[TextClip]:
-        """Create title text overlay with styling."""
+        """Create title text overlay with enhanced styling and visibility."""
         try:
-            # Text styling
-            font_size = min(80, max(40, self.width // 15))  # Responsive font size
+            # Clean and prepare title text
+            clean_title = title.strip()
+            if len(clean_title) > 40:
+                # Split long titles into multiple lines
+                words = clean_title.split()
+                if len(words) > 4:
+                    mid = len(words) // 2
+                    clean_title = ' '.join(words[:mid]) + '\n' + ' '.join(words[mid:])
 
-            # Create text clip
-            title_clip = TextClip(
-                title,
-                fontsize=font_size,
-                color='white',
-                font='Arial-Bold',
-                stroke_color='black',
-                stroke_width=3,
-                method='caption',
-                size=(self.width - 100, None),  # Leave margins
-                align='center'
-            )
+            # Dynamic font size based on title length and screen width
+            base_font_size = 70
+            if len(clean_title) > 30:
+                font_size = max(50, base_font_size - len(clean_title))
+            else:
+                font_size = base_font_size
 
-            # Position at top of screen
-            title_clip = title_clip.set_position(('center', 50))
+            # Try different font options in order of preference
+            font_options = [
+                'Arial-Bold',
+                'Helvetica-Bold',
+                'DejaVu-Sans-Bold',
+                'Liberation-Sans-Bold',
+                None  # System default
+            ]
+
+            title_clip = None
+            for font in font_options:
+                try:
+                    # Create text with enhanced styling
+                    title_clip = TextClip(
+                        clean_title,
+                        fontsize=font_size,
+                        color='white',
+                        font=font,
+                        stroke_color='black',
+                        stroke_width=4,
+                        method='caption',
+                        size=(self.width - 120, None),  # Leave margins on sides
+                        align='center',
+                        interline=-5  # Tighter line spacing for multi-line
+                    )
+                    break  # Success, exit loop
+
+                except Exception as e:
+                    logging.debug(f"Font {font} failed: {e}")
+                    continue
+
+            if not title_clip:
+                # Final fallback - simple text without advanced features
+                title_clip = TextClip(
+                    clean_title,
+                    fontsize=font_size,
+                    color='white'
+                )
+
+            # Position title at the top with padding
+            title_height = title_clip.h if hasattr(title_clip, 'h') else 100
+            y_position = 60  # Top padding
+
+            # Ensure title doesn't go off screen
+            if y_position + title_height > self.height * 0.3:
+                y_position = 30
+                # Make font smaller if still too big
+                if title_height > self.height * 0.25:
+                    font_size = int(font_size * 0.7)
+                    title_clip = TextClip(
+                        clean_title,
+                        fontsize=font_size,
+                        color='white',
+                        stroke_color='black',
+                        stroke_width=3
+                    )
+
+            # Set position and duration
+            title_clip = title_clip.set_position(('center', y_position))
             title_clip = title_clip.set_duration(duration)
 
-            # Add fade in/out effects
-            title_clip = title_clip.fadeout(1.0).fadein(1.0)
+            # Enhanced visibility effects
+            # Add semi-transparent background box for better readability
+            from moviepy.editor import ColorClip
+            bg_height = title_clip.h + 40 if hasattr(title_clip, 'h') else 120
+            bg_clip = ColorClip(
+                size=(self.width, bg_height),
+                color=(0, 0, 0),  # Black background
+                duration=duration
+            ).set_opacity(0.6).set_position((0, y_position - 20))
 
-            logging.info(f"Created title overlay: '{title[:30]}...'")
-            return title_clip
+            # Combine background and text
+            title_with_bg = CompositeVideoClip([bg_clip, title_clip])
+
+            # Add fade effects for smooth appearance
+            title_with_bg = title_with_bg.fadeout(1.0).fadein(1.0)
+
+            logging.info(f"Created enhanced title overlay: '{clean_title[:30]}...' at position (center, {y_position})")
+            return title_with_bg
 
         except Exception as e:
             logging.error(f"Error creating title overlay: {e}")
-            # Fallback: create simple text without advanced styling
+            # Emergency fallback
             try:
                 simple_title = TextClip(
-                    title,
-                    fontsize=60,
-                    color='white',
-                    method='caption'
+                    title[:30],  # Truncate if too long
+                    fontsize=50,
+                    color='white'
                 ).set_position(('center', 50)).set_duration(duration)
+
+                logging.info("Created simple fallback title overlay")
                 return simple_title
-            except:
-                logging.error("Failed to create even simple title overlay")
+            except Exception as e2:
+                logging.error(f"Even simple title overlay failed: {e2}")
                 return None
 
     def _compose_final_video(self, background: VideoFileClip, title: Optional[TextClip],
                              audio: AudioFileClip) -> Optional[CompositeVideoClip]:
-        """Compose all elements into final video."""
+        """Compose all elements into final video with proper layering."""
         try:
             # Start with background
             video_clips = [background]
 
-            # Add title overlay if available
+            # Add title overlay if available (ensure it's on top)
             if title:
                 video_clips.append(title)
+                logging.info("Title overlay added to video composition")
+            else:
+                logging.warning("No title overlay available - video will have no title text")
 
-            # Composite video
+            # Composite video with proper layering
             final_video = CompositeVideoClip(video_clips, size=(self.width, self.height))
 
             # Set audio
             final_video = final_video.set_audio(audio)
 
-            # Ensure duration matches audio
+            # Ensure duration matches audio exactly
             final_video = final_video.set_duration(audio.duration)
 
-            logging.info(f"Final video composed - Duration: {audio.duration:.2f}s")
+            logging.info(
+                f"Final video composed successfully - Duration: {audio.duration:.2f}s, Clips: {len(video_clips)}")
             return final_video
 
         except Exception as e:
