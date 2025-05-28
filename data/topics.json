@@ -1,0 +1,1263 @@
+[
+  {
+    "title": "Abstraction",
+    "description": "Abstraction is the process of reducing complexity by focusing on the essential characteristics of an object or system, while hiding irrelevant details. It allows developers to manage complexity by creating simplified models or interfaces that represent real-world entities, thereby enabling easier understanding, design, and maintenance of software systems.",
+    "complete": false
+  },
+  {
+    "title": "Agile",
+    "description": "Agile is a flexible and iterative approach to software development that promotes continuous collaboration between cross-functional teams, adaptive planning, early delivery of working software, and continuous improvement. It emphasizes responding effectively to changing requirements and customer feedback throughout the development lifecycle.",
+    "complete": false
+  },
+  {
+    "title": "Algorithm",
+    "description": "An algorithm is a well-defined, step-by-step set of instructions designed to perform a specific task or solve a particular problem efficiently and correctly. Algorithms form the foundation of computer programming and software development, enabling automation of complex computations and data processing.",
+    "complete": false
+  },
+  {
+    "title": "API",
+    "description": "An Application Programming Interface (API) is a set of protocols, routines, and tools that allow different software applications to communicate and interact with each other. APIs enable integration between systems, facilitate the extension of software functionality, and promote modular and reusable code development.",
+    "complete": false
+  },
+  {
+    "title": "Application Software",
+    "description": "Application software refers to programs designed to perform specific user-oriented tasks such as word processing, web browsing, or database management. These software applications provide direct utility to end users by enabling them to accomplish particular functions or solve domain-specific problems.",
+    "complete": false
+  },
+  {
+    "title": "Architecture",
+    "description": "Software architecture defines the fundamental structures of a software system, including its components, their relationships, and the principles guiding its design and evolution. It serves as a blueprint for both the system and the project, ensuring scalability, maintainability, and alignment with business goals.",
+    "complete": false
+  },
+  {
+    "title": "Artifact",
+    "description": "In software development, an artifact is any tangible by-product produced during the process, including documents, models, source code, executables, and test scripts. Artifacts serve as inputs or outputs in various stages of the development lifecycle and are essential for documentation, communication, and quality assurance.",
+    "complete": false
+  },
+  {
+    "title": "Automated Testing",
+    "description": "Automated testing involves using specialized software tools to execute pre-scripted tests on a software application automatically. This approach improves testing efficiency, increases coverage, reduces human error, and allows frequent regression testing to ensure software quality throughout development.",
+    "complete": false
+  },
+  {
+    "title": "Backend",
+    "description": "The backend refers to the server-side part of a software application responsible for business logic, database interactions, authentication, and server configuration. It processes client requests, manages data storage, and ensures the application functions correctly behind the scenes.",
+    "complete": false
+  },
+  {
+    "title": "Beta Testing",
+    "description": "Beta testing is a phase of software testing where a pre-release version of the software is distributed to a limited number of end users outside the development team. The goal is to identify bugs, usability issues, and gather feedback in a real-world environment before the final release.",
+    "complete": false
+  },
+  {
+    "title": "Big Data",
+    "description": "Big Data refers to extremely large and complex data sets that traditional data processing software cannot efficiently handle. It involves capturing, storing, analyzing, and visualizing vast amounts of information to extract meaningful patterns, trends, and insights for decision-making.",
+    "complete": false
+  },
+  {
+    "title": "Bug",
+    "description": "A bug is an error, flaw, or fault in software code that causes the program to behave unexpectedly or produce incorrect results. Bugs can arise from coding mistakes, design oversights, or integration issues and require identification and correction through debugging and testing.",
+    "complete": false
+  },
+  {
+    "title": "Build",
+    "description": "A build is the process of converting source code files and resources into executable software. It typically involves compiling code, linking libraries, packaging files, and generating deployable artifacts. Builds can be automated using build tools to ensure consistency and efficiency.",
+    "complete": false
+  },
+  {
+    "title": "Business Logic",
+    "description": "Business logic is the set of rules, calculations, and workflows that define how business operations are conducted within software. It governs how data is created, stored, and manipulated to fulfill business requirements and enforce policies.",
+    "complete": false
+  },
+  {
+    "title": "Cache",
+    "description": "Cache is a high-speed data storage layer that temporarily holds frequently accessed data to reduce latency and improve performance. It can reside in hardware (like CPU cache) or software (like web cache) and helps minimize expensive data retrieval operations.",
+    "complete": false
+  },
+  {
+    "title": "CI (Continuous Integration)",
+    "description": "Continuous Integration (CI) is a software development practice where developers frequently merge their code changes into a shared repository. Automated builds and tests are run to detect integration errors early, enabling faster feedback and reducing integration problems.",
+    "complete": false
+  },
+  {
+    "title": "Class",
+    "description": "In object-oriented programming, a class is a blueprint or template that defines properties (attributes) and behaviors (methods) for objects. Classes encapsulate data and functions, allowing the creation of multiple instances (objects) with shared characteristics.",
+    "complete": false
+  },
+  {
+    "title": "Code Refactoring",
+    "description": "Code refactoring is the process of restructuring existing computer code without changing its external behavior. The goal is to improve code readability, maintainability, and extensibility by simplifying complex structures, removing redundancies, and improving design.",
+    "complete": false
+  },
+  {
+    "title": "Compiler",
+    "description": "A compiler is a software tool that translates source code written in a high-level programming language into machine code or an intermediate form that a computer's processor can execute directly. It performs syntax and semantic analysis, optimization, and code generation.",
+    "complete": false
+  },
+  {
+    "title": "Concurrency",
+    "description": "Concurrency refers to the ability of a system to execute multiple sequences of operations simultaneously or overlapping in time. It improves resource utilization and application responsiveness, especially in multi-core processors and distributed systems.",
+    "complete": false
+  },
+  {
+    "title": "CRUD",
+    "description": "CRUD stands for Create, Read, Update, and Delete, which are the four basic operations performed on persistent data in databases or storage systems. These operations form the foundation for managing data in most software applications.",
+    "complete": false
+  },
+  {
+    "title": "Data Abstraction",
+    "description": "Data abstraction involves hiding the complex implementation details of data storage and manipulation behind a simplified interface. It allows programmers to interact with data structures or databases without needing to understand the underlying complexities.",
+    "complete": false
+  },
+  {
+    "title": "Data Structure",
+    "description": "A data structure is a specialized format for organizing, managing, and storing data to enable efficient access and modification. Common data structures include arrays, linked lists, trees, graphs, stacks, and queues, each suited for different types of operations.",
+    "complete": false
+  },
+  {
+    "title": "Debugging",
+    "description": "Debugging is the systematic process of identifying, analyzing, and removing errors or bugs from software code. It involves using tools and techniques such as breakpoints, logging, and code inspection to isolate issues and verify fixes.",
+    "complete": false
+  },
+  {
+    "title": "Deployment",
+    "description": "Deployment is the process of delivering a software application to a production environment where it can be accessed and used by end users. It includes activities such as installation, configuration, testing, and release management to ensure smooth operation.",
+    "complete": false
+  },
+  {
+    "title": "Design Pattern",
+    "description": "Design patterns are proven, reusable solutions to common software design problems. They provide templates and best practices for structuring code to improve flexibility, maintainability, and scalability. Examples include Singleton, Observer, and Factory patterns.",
+    "complete": false
+  },
+  {
+    "title": "DevOps",
+    "description": "DevOps is a set of cultural philosophies, practices, and tools that combine software development (Dev) and IT operations (Ops) to shorten the development lifecycle, increase deployment frequency, and deliver high-quality software reliably and efficiently.",
+    "complete": false
+  },
+  {
+    "title": "Documentation",
+    "description": "Documentation in software engineering refers to written text, diagrams, and other materials that describe the design, functionality, architecture, and usage of software. Good documentation facilitates communication, maintenance, and knowledge transfer among stakeholders.",
+    "complete": false
+  },
+  {
+    "title": "End User",
+    "description": "The end user is the person or group who ultimately uses the software application for their intended purpose. Understanding end user needs and behavior is critical for designing effective, user-friendly software solutions.",
+    "complete": false
+  },
+  {
+    "title": "Exception Handling",
+    "description": "Exception handling is a programming construct that enables a program to detect and respond to runtime errors or exceptional conditions gracefully, preventing crashes and allowing recovery or meaningful error reporting.",
+    "complete": false
+  },
+  {
+    "title": "Executable",
+    "description": "An executable is a file containing machine code that can be directly run by a computer's operating system. It is the output of the build process and represents the final form of a software program ready for execution.",
+    "complete": false
+  },
+  {
+    "title": "Extensibility",
+    "description": "Extensibility is the design principle that allows software systems to be easily expanded with new features or components without major changes to existing code. It supports adaptability and future growth of the application.",
+    "complete": false
+  },
+  {
+    "title": "Frontend",
+    "description": "The frontend is the client-side part of a software application that users interact with directly. It includes the graphical user interface (GUI), user experience design, and client-side logic implemented using technologies like HTML, CSS, and JavaScript.",
+    "complete": false
+  },
+  {
+    "title": "Functional Programming",
+    "description": "Functional programming is a programming paradigm that treats computation as the evaluation of mathematical functions and avoids changing state or mutable data. It emphasizes immutability, first-class functions, and declarative code.",
+    "complete": false
+  },
+  {
+    "title": "Framework",
+    "description": "A framework is a reusable set of libraries, tools, and conventions that provide a foundation for developing software applications. It offers predefined structures and components to streamline development and enforce best practices.",
+    "complete": false
+  },
+  {
+    "title": "Full Stack Developer",
+    "description": "A full stack developer is a software engineer proficient in both frontend (client-side) and backend (server-side) development. They possess the skills to design, build, and maintain complete web applications or software systems.",
+    "complete": false
+  },
+  {
+    "title": "Git",
+    "description": "Git is a distributed version control system widely used for tracking changes in source code during software development. It allows multiple developers to collaborate efficiently, manage code history, and resolve conflicts.",
+    "complete": false
+  },
+  {
+    "title": "GUI (Graphical User Interface)",
+    "description": "A graphical user interface (GUI) is a visual interface that allows users to interact with software through graphical elements like windows, buttons, icons, and menus, making software more accessible and user-friendly compared to text-based interfaces.",
+    "complete": false
+  },
+  {
+    "title": "Gradle",
+    "description": "Gradle is a powerful build automation tool primarily used for Java projects. It uses a domain-specific language based on Groovy or Kotlin to define build logic, manage dependencies, and automate tasks like compilation, testing, and packaging.",
+    "complete": false
+  },
+  {
+    "title": "Hardware",
+    "description": "Hardware refers to the physical components of a computer system, including the processor, memory, storage devices, input/output devices, and networking equipment, which provide the foundation for running software applications.",
+    "complete": false
+  },
+  {
+    "title": "High-Level Language",
+    "description": "A high-level programming language is designed to be easy for humans to read and write, abstracting away hardware details. Examples include Python, Java, and C#. These languages are translated into machine code via compilers or interpreters.",
+    "complete": false
+  },
+  {
+    "title": "HTTP (Hypertext Transfer Protocol)",
+    "description": "HTTP is the foundational protocol used for transmitting hypermedia documents, such as HTML, across the World Wide Web. It defines how messages are formatted and transmitted, and how web servers and browsers should respond to various commands.",
+    "complete": false
+  },
+  {
+    "title": "Hybrid Testing",
+    "description": "Hybrid testing combines manual and automated testing techniques to leverage the strengths of both approaches. It allows testers to perform exploratory and usability testing manually while using automation for repetitive and regression tests.",
+    "complete": false
+  },
+  {
+    "title": "IDE (Integrated Development Environment)",
+    "description": "An IDE is a software application that provides comprehensive facilities to programmers for software development. It typically includes a source code editor, debugger, build automation tools, and sometimes a graphical user interface builder.",
+    "complete": false
+  },
+  {
+    "title": "Incremental Development",
+    "description": "Incremental development is a software development approach where the system is designed, implemented, and tested incrementally in small portions or modules. Each increment adds functional capabilities until the complete system is built.",
+    "complete": false
+  },
+  {
+    "title": "Inheritance",
+    "description": "Inheritance is an object-oriented programming principle where a new class (child or subclass) derives properties and behaviors from an existing class (parent or superclass), promoting code reuse and hierarchical relationships.",
+    "complete": false
+  },
+  {
+    "title": "Integration Testing",
+    "description": "Integration testing is the phase in software testing where individual modules or components are combined and tested as a group to detect interface defects and ensure that integrated parts work together as intended.",
+    "complete": false
+  },
+  {
+    "title": "Java",
+    "description": "Java is a widely-used, high-level, object-oriented programming language known for its portability across platforms via the Java Virtual Machine (JVM). It is commonly used for building enterprise-scale applications, mobile apps, and web services.",
+    "complete": false
+  },
+  {
+    "title": "Jenkins",
+    "description": "Jenkins is an open-source automation server used to implement continuous integration and continuous delivery (CI/CD) pipelines. It automates building, testing, and deploying software projects, enabling faster and more reliable software delivery.",
+    "complete": false
+  },
+  {
+    "title": "JSON (JavaScript Object Notation)",
+    "description": "JSON is a lightweight, text-based data interchange format that is easy for humans to read and write and easy for machines to parse and generate. It is widely used for transmitting data between a server and web applications.",
+    "complete": false
+  },
+  {
+    "title": "Kanban",
+    "description": "Kanban is a visual workflow management method used in software development and other industries to visualize work, limit work in progress, and optimize flow. It helps teams improve efficiency and identify bottlenecks.",
+    "complete": false
+  },
+  {
+    "title": "Keyword",
+    "description": "A keyword is a reserved word in a programming language that has a predefined meaning and cannot be used for identifiers like variable names. Examples include 'if', 'while', 'return', and 'class'.",
+    "complete": false
+  },
+  {
+    "title": "Lambda Expression",
+    "description": "A lambda expression is an anonymous function that can be treated as a value, passed as an argument, or returned from other functions. It is commonly used in functional programming to write concise and flexible code.",
+    "complete": false
+  },
+  {
+    "title": "Library",
+    "description": "A library is a collection of precompiled routines, functions, or classes that developers can use to perform common tasks without writing code from scratch, thereby accelerating software development and ensuring code reuse.",
+    "complete": false
+  },
+  {
+    "title": "Load Testing",
+    "description": "Load testing is a type of performance testing that evaluates how a software application behaves under expected user loads. It measures responsiveness, stability, and scalability to ensure the system can handle peak traffic.",
+    "complete": false
+  },
+  {
+    "title": "Machine Learning",
+    "description": "Machine learning is a subset of artificial intelligence where algorithms learn from data to identify patterns and make decisions or predictions without being explicitly programmed for specific tasks.",
+    "complete": false
+  },
+  {
+    "title": "Method",
+    "description": "A method is a function or procedure associated with an object or class in object-oriented programming. It defines behaviors or actions that objects of the class can perform.",
+    "complete": false
+  },
+  {
+    "title": "Middleware",
+    "description": "Middleware is software that acts as an intermediary layer between different applications, systems, or components to facilitate communication, data management, and interoperability.",
+    "complete": false
+  },
+  {
+    "title": "Model",
+    "description": "A model is an abstract representation of a system, process, or concept used to understand, analyze, or simulate real-world phenomena within software development.",
+    "complete": false
+  },
+  {
+    "title": "Namespace",
+    "description": "A namespace is a container that holds a set of identifiers such as variable and function names, helping to organize code and avoid naming conflicts in large software projects.",
+    "complete": false
+  },
+  {
+    "title": "Normalization",
+    "description": "Normalization is the process of organizing data in a database to reduce redundancy and improve data integrity by dividing tables and defining relationships according to rules called normal forms.",
+    "complete": false
+  },
+  {
+    "title": "Node.js",
+    "description": "Node.js is an open-source, cross-platform JavaScript runtime environment that allows developers to run JavaScript code outside of a web browser, commonly used for building scalable server-side applications.",
+    "complete": false
+  },
+  {
+    "title": "Object",
+    "description": "An object is an instance of a class in object-oriented programming that encapsulates data (attributes) and behavior (methods) representing a real-world entity or concept.",
+    "complete": false
+  },
+  {
+    "title": "Object-Oriented Programming (OOP)",
+    "description": "Object-oriented programming is a programming paradigm based on the concept of objects that contain data and methods. It promotes code reuse, modularity, and abstraction through principles like inheritance, encapsulation, and polymorphism.",
+    "complete": false
+  },
+  {
+    "title": "Open Source",
+    "description": "Open source software is software with source code that is made freely available for anyone to view, modify, and distribute. It encourages collaboration, transparency, and community-driven development.",
+    "complete": false
+  },
+  {
+    "title": "Operating System",
+    "description": "An operating system is system software that manages computer hardware, software resources, and provides common services for computer programs, enabling user interaction with the system.",
+    "complete": false
+  },
+  {
+    "title": "Package",
+    "description": "A package is a namespace that organizes a set of related classes and interfaces, helping to avoid naming conflicts and manage code modularity in programming languages like Java and Python.",
+    "complete": false
+  },
+  {
+    "title": "Patch",
+    "description": "A patch is a set of changes to software code designed to fix bugs, improve functionality, or address security vulnerabilities. Patches are often distributed as updates or hotfixes.",
+    "complete": false
+  },
+  {
+    "title": "Performance Testing",
+    "description": "Performance testing evaluates how a software application performs in terms of responsiveness, stability, scalability, and resource usage under a particular workload to ensure it meets performance requirements.",
+    "complete": false
+  },
+  {
+    "title": "Plugin",
+    "description": "A plugin is a software component that adds specific features or functionalities to an existing application, allowing for extensibility without modifying the core program.",
+    "complete": false
+  },
+  {
+    "title": "Prototype",
+    "description": "A prototype is an early sample or model of a software application used to demonstrate concepts, gather user feedback, and refine requirements before full-scale development.",
+    "complete": false
+  },
+  {
+    "title": "QA (Quality Assurance)",
+    "description": "Quality Assurance is a systematic process that ensures software products meet specified requirements and quality standards through planned activities such as reviews, testing, and audits.",
+    "complete": false
+  },
+  {
+    "title": "Query",
+    "description": "A query is a request for data or information from a database or information system, typically formulated in a query language like SQL to retrieve or manipulate data.",
+    "complete": false
+  },
+  {
+    "title": "Queue",
+    "description": "A queue is a linear data structure that follows the First In, First Out (FIFO) principle, where elements are added at the rear and removed from the front, commonly used in scheduling and buffering.",
+    "complete": false
+  },
+  {
+    "title": "Refactoring",
+    "description": "Refactoring is the disciplined technique of restructuring existing code to improve its internal structure, readability, and maintainability without altering its external behavior or functionality.",
+    "complete": false
+  },
+  {
+    "title": "Regression Testing",
+    "description": "Regression testing involves re-running previously conducted tests to verify that recent code changes have not adversely affected existing functionality, ensuring software stability over time.",
+    "complete": false
+  },
+  {
+    "title": "Repository",
+    "description": "A repository is a central location where software source code, documentation, and related artifacts are stored and managed, often using version control systems like Git.",
+    "complete": false
+  },
+  {
+    "title": "REST (Representational State Transfer)",
+    "description": "REST is an architectural style for designing networked applications that use stateless communication protocols, typically HTTP, to create scalable and maintainable web services.",
+    "complete": false
+  },
+  {
+    "title": "SaaS (Software as a Service)",
+    "description": "Software as a Service is a cloud computing model where software applications are delivered over the internet on a subscription basis, eliminating the need for local installation and maintenance.",
+    "complete": false
+  },
+  {
+    "title": "Scrum",
+    "description": "Scrum is an Agile framework for managing complex software projects using iterative development cycles called sprints, emphasizing teamwork, accountability, and continuous improvement.",
+    "complete": false
+  },
+  {
+    "title": "SDK (Software Development Kit)",
+    "description": "A Software Development Kit is a collection of software tools, libraries, documentation, and code samples that developers use to create applications for specific platforms or frameworks.",
+    "complete": false
+  },
+  {
+    "title": "Source Code",
+    "description": "Source code is the human-readable set of instructions written by programmers in a programming language, which is later compiled or interpreted to create executable software.",
+    "complete": false
+  },
+  {
+    "title": "Sprint",
+    "description": "A sprint is a fixed-length iteration in Agile development, typically lasting 1-4 weeks, during which a specific set of features or tasks are completed and reviewed.",
+    "complete": false
+  },
+  {
+    "title": "SQL (Structured Query Language)",
+    "description": "SQL is a standardized programming language used for managing and manipulating relational databases, enabling operations such as querying, updating, and schema creation.",
+    "complete": false
+  },
+  {
+    "title": "Static Testing",
+    "description": "Static testing involves reviewing and analyzing software artifacts like code, requirements, and design documents without executing the code, to detect errors early in the development process.",
+    "complete": false
+  },
+  {
+    "title": "Syntax",
+    "description": "Syntax refers to the set of rules that define the correct structure and format of statements in a programming language, ensuring that code is interpretable by compilers or interpreters.",
+    "complete": false
+  },
+  {
+    "title": "Test Case",
+    "description": "A test case is a documented set of conditions, inputs, and expected results used to verify that a particular feature or functionality of software works as intended.",
+    "complete": false
+  },
+  {
+    "title": "Testing",
+    "description": "Testing is the process of executing software to identify defects, verify functionality, and ensure that the software meets specified requirements and quality standards.",
+    "complete": false
+  },
+  {
+    "title": "Thread",
+    "description": "A thread is the smallest unit of execution within a process, allowing multiple sequences of instructions to run concurrently within the same application to improve performance and responsiveness.",
+    "complete": false
+  },
+  {
+    "title": "Topology",
+    "description": "Topology in software and networking refers to the arrangement or mapping of elements such as nodes, connections, or components within a system or network, affecting communication and performance.",
+    "complete": false
+  },
+  {
+    "title": "TDD (Test-Driven Development)",
+    "description": "Test-Driven Development is a software development practice where developers write automated test cases before writing the functional code, ensuring that code meets requirements and is testable from the outset.",
+    "complete": false
+  },
+  {
+    "title": "UI (User Interface)",
+    "description": "User Interface is the point of interaction between the user and a software application, encompassing visual elements like buttons, menus, and forms designed for usability and accessibility.",
+    "complete": false
+  },
+  {
+    "title": "Unit Testing",
+    "description": "Unit testing involves testing individual components or functions of software in isolation to verify that each part behaves correctly according to its specification.",
+    "complete": false
+  },
+  {
+    "title": "User Experience (UX)",
+    "description": "User Experience encompasses all aspects of a user's interaction with a software application, focusing on ease of use, accessibility, performance, and overall satisfaction.",
+    "complete": false
+  },
+  {
+    "title": "Use Case",
+    "description": "A use case is a detailed description of how users interact with a system to achieve specific goals, capturing functional requirements from the user's perspective.",
+    "complete": false
+  },
+  {
+    "title": "Version Control",
+    "description": "Version control is a system that records changes to files over time, allowing developers to track revisions, collaborate, and revert to previous versions if needed.",
+    "complete": false
+  },
+  {
+    "title": "Virtual Machine",
+    "description": "A virtual machine is a software emulation of a physical computer that runs an operating system and applications in an isolated environment, enabling multiple OS instances on a single hardware platform.",
+    "complete": false
+  },
+  {
+    "title": "Visualization",
+    "description": "Visualization is the graphical representation of data, processes, or system architectures to aid understanding, analysis, and communication among stakeholders.",
+    "complete": false
+  },
+  {
+    "title": "Waterfall Model",
+    "description": "The Waterfall Model is a linear and sequential software development process where each phase must be completed before the next begins, emphasizing thorough documentation and upfront planning.",
+    "complete": false
+  },
+  {
+    "title": "Web Service",
+    "description": "A web service is a software system designed to support interoperable machine-to-machine interaction over a network, often using protocols like HTTP and data formats such as XML or JSON.",
+    "complete": false
+  },
+  {
+    "title": "Workflow",
+    "description": "Workflow is the sequence of processes or tasks through which work passes from initiation to completion, often modeled and automated in software systems to improve efficiency.",
+    "complete": false
+  },
+  {
+    "title": "XML (Extensible Markup Language)",
+    "description": "XML is a flexible, text-based markup language used to encode documents and data in a format that is both human-readable and machine-readable, widely used for data interchange.",
+    "complete": false
+  },
+  {
+    "title": "XPath",
+    "description": "XPath is a query language used for selecting nodes from an XML document, enabling navigation and extraction of specific parts of the XML data structure.",
+    "complete": false
+  },
+  {
+    "title": "YAML",
+    "description": "YAML is a human-readable data serialization format commonly used for configuration files and data exchange between languages with different data structures.",
+    "complete": false
+  },
+  {
+    "title": "Zero-Day",
+    "description": "A zero-day is a newly discovered software vulnerability that is unknown to the software vendor and has no available patch, making it a critical security risk until addressed.",
+    "complete": false
+  },
+  {
+    "title": "Zip",
+    "description": "Zip is a widely-used file compression format that reduces the size of files or groups of files to save storage space or facilitate faster transmission over networks.",
+    "complete": false
+  },
+    {
+      "title": "Acceptance Testing",
+      "description": "Acceptance testing is the formal testing process conducted to determine whether a software system meets the business requirements and is ready for delivery to the end users. It is typically performed by the client or end users to validate functionality, usability, and compliance.",
+      "complete": false
+    },
+    {
+      "title": "Access Control",
+      "description": "Access control refers to the mechanisms and policies that restrict or grant users and systems permission to access resources or perform operations within a software system, ensuring security and data protection.",
+      "complete": false
+    },
+    {
+      "title": "Active Record",
+      "description": "Active Record is a design pattern used in software development where an object wraps a row in a database table or view, encapsulating database access and adding domain logic on that data.",
+      "complete": false
+    },
+    {
+      "title": "Adapter Pattern",
+      "description": "The Adapter Pattern is a structural design pattern that allows incompatible interfaces to work together by converting the interface of one class into another expected by clients, promoting code reuse and flexibility.",
+      "complete": false
+    },
+    {
+      "title": "Agile Manifesto",
+      "description": "The Agile Manifesto is a declaration of four key values and twelve principles that guide Agile software development, emphasizing individuals and interactions, working software, customer collaboration, and responding to change.",
+      "complete": false
+    },
+    {
+      "title": "Algorithm Complexity",
+      "description": "Algorithm complexity measures the amount of computational resources, such as time and memory, that an algorithm consumes relative to the size of its input, often expressed using Big O notation.",
+      "complete": false
+    },
+    {
+      "title": "Alpha Testing",
+      "description": "Alpha testing is an early phase of software testing performed by internal staff before releasing the software to external users. It aims to identify bugs and usability issues in a controlled environment.",
+      "complete": false
+    },
+    {
+      "title": "Analytical Modeling",
+      "description": "Analytical modeling involves creating mathematical models to represent and analyze the behavior, performance, or reliability of software systems, supporting decision-making and optimization.",
+      "complete": false
+    },
+    {
+      "title": "Annotation",
+      "description": "Annotation is metadata added to source code that provides additional information to the compiler or runtime environment, often used for configuration, documentation, or code generation.",
+      "complete": false
+    },
+    {
+      "title": "API Gateway",
+      "description": "An API Gateway is a server that acts as an entry point for client requests, routing them to appropriate backend services, handling authentication, rate limiting, and protocol translation.",
+      "complete": false
+    },
+    {
+      "title": "Application Lifecycle",
+      "description": "The application lifecycle encompasses all phases of software development from initial concept through design, development, testing, deployment, maintenance, and eventual retirement.",
+      "complete": false
+    },
+    {
+      "title": "Architecture Pattern",
+      "description": "Architecture patterns are reusable solutions and templates for organizing software systems at a high level, such as layered architecture, microservices, or event-driven architecture.",
+      "complete": false
+    },
+    {
+      "title": "Artifact Repository",
+      "description": "An artifact repository is a storage system that manages and stores build artifacts, libraries, and dependencies, facilitating version control and distribution in software development.",
+      "complete": false
+    },
+    {
+      "title": "Asynchronous Programming",
+      "description": "Asynchronous programming is a programming paradigm that allows operations to run independently of the main program flow, improving responsiveness and scalability by not blocking execution while waiting for tasks to complete.",
+      "complete": false
+    },
+    {
+      "title": "Authentication",
+      "description": "Authentication is the process of verifying the identity of a user or system before granting access to resources, typically involving credentials like passwords, tokens, or biometrics.",
+      "complete": false
+    },
+    {
+      "title": "Authorization",
+      "description": "Authorization determines what actions or resources an authenticated user or system is permitted to access, enforcing security policies and access controls.",
+      "complete": false
+    },
+    {
+      "title": "Automated Build",
+      "description": "Automated build is the process of using tools to automatically compile source code, run tests, and package software without manual intervention, enabling continuous integration and delivery.",
+      "complete": false
+    },
+    {
+      "title": "Backlog",
+      "description": "A backlog is a prioritized list of features, enhancements, bug fixes, and tasks that a development team maintains to manage work items in Agile or Scrum projects.",
+      "complete": false
+    },
+    {
+      "title": "Behavior-Driven Development (BDD)",
+      "description": "BDD is an Agile software development approach that encourages collaboration between developers, testers, and business stakeholders by defining application behavior in plain language using examples and scenarios.",
+      "complete": false
+    },
+    {
+      "title": "Binary Search",
+      "description": "Binary search is an efficient algorithm for finding an item in a sorted list by repeatedly dividing the search interval in half until the target value is found or the interval is empty.",
+      "complete": false
+    },
+    {
+      "title": "Bit",
+      "description": "A bit is the smallest unit of data in computing, representing a binary value of either 0 or 1, used to encode information in digital systems.",
+      "complete": false
+    },
+    {
+      "title": "Branching",
+      "description": "Branching is a version control practice where developers create separate code lines to work independently on features or fixes, enabling parallel development and later merging.",
+      "complete": false
+    },
+    {
+      "title": "Buffer",
+      "description": "A buffer is a temporary storage area in memory used to hold data while it is being transferred between two locations or processed, helping to manage speed differences between devices or processes.",
+      "complete": false
+    },
+    {
+      "title": "Bug Tracking",
+      "description": "Bug tracking is the process of recording, managing, and monitoring software defects using specialized tools to prioritize fixes and improve software quality.",
+      "complete": false
+    },
+    {
+      "title": "Build Automation",
+      "description": "Build automation involves using scripts and tools to automate the process of compiling source code, running tests, and packaging software, reducing errors and speeding up development cycles.",
+      "complete": false
+    },
+    {
+      "title": "Business Process Modeling",
+      "description": "Business process modeling is the activity of representing organizational processes in a visual or formal way to analyze, improve, and automate workflows within software systems.",
+      "complete": false
+    },
+    {
+      "title": "Cache Miss",
+      "description": "A cache miss occurs when the data requested by a program is not found in the cache memory, causing the system to retrieve data from slower main memory or storage, impacting performance.",
+      "complete": false
+    },
+    {
+      "title": "Capability Maturity Model Integration (CMMI)",
+      "description": "CMMI is a process level improvement training and appraisal program that helps organizations improve their software development processes through defined maturity levels.",
+      "complete": false
+    },
+    {
+      "title": "Case Study",
+      "description": "A case study in software engineering is an in-depth analysis of a particular project or system to understand challenges, solutions, and lessons learned.",
+      "complete": false
+    },
+    {
+      "title": "Class Diagram",
+      "description": "A class diagram is a type of static structure diagram in UML that describes the structure of a system by showing its classes, attributes, methods, and relationships.",
+      "complete": false
+    },
+    {
+      "title": "Clean Code",
+      "description": "Clean code refers to code that is easy to read, understand, and maintain, following best practices such as meaningful naming, modularity, and simplicity.",
+      "complete": false
+    },
+    {
+      "title": "Cloud Computing",
+      "description": "Cloud computing is the delivery of computing services—including servers, storage, databases, networking, software, and analytics—over the internet, enabling scalable and flexible resource use.",
+      "complete": false
+    },
+    {
+      "title": "Code Coverage",
+      "description": "Code coverage is a metric used in software testing that measures the percentage of source code executed by a test suite, helping to assess test effectiveness.",
+      "complete": false
+    },
+    {
+      "title": "Code Review",
+      "description": "Code review is the systematic examination of source code by developers other than the author to identify bugs, improve code quality, and ensure adherence to standards.",
+      "complete": false
+    },
+    {
+      "title": "Cohesion",
+      "description": "Cohesion refers to how closely related the responsibilities of a single module or class are. High cohesion means the module performs a single task or closely related tasks, improving maintainability.",
+      "complete": false
+    },
+    {
+      "title": "Command Pattern",
+      "description": "The Command Pattern is a behavioral design pattern that encapsulates a request as an object, allowing parameterization of clients with queues, requests, and operations.",
+      "complete": false
+    },
+    {
+      "title": "Compiler Optimization",
+      "description": "Compiler optimization involves techniques used by compilers to improve the performance and efficiency of generated machine code without altering the program's behavior.",
+      "complete": false
+    },
+    {
+      "title": "Continuous Delivery",
+      "description": "Continuous Delivery is a software engineering approach in which teams produce software in short cycles, ensuring it can be reliably released at any time through automated testing and deployment.",
+      "complete": false
+    },
+    {
+      "title": "Continuous Deployment",
+      "description": "Continuous Deployment extends continuous delivery by automatically deploying every change that passes automated tests to production, enabling rapid and frequent releases.",
+      "complete": false
+    },
+    {
+      "title": "Coupling",
+      "description": "Coupling refers to the degree of interdependence between software modules. Low coupling is desirable as it reduces the impact of changes and improves modularity.",
+      "complete": false
+    },
+    {
+      "title": "Cross-Platform",
+      "description": "Cross-platform software is designed to run on multiple operating systems or hardware platforms without modification, increasing accessibility and user reach.",
+      "complete": false
+    },
+    {
+      "title": "Data Mining",
+      "description": "Data mining is the process of discovering patterns, correlations, and anomalies within large data sets using statistical and machine learning techniques.",
+      "complete": false
+    },
+    {
+      "title": "Data Warehouse",
+      "description": "A data warehouse is a centralized repository that stores integrated data from multiple sources, optimized for query and analysis to support business intelligence.",
+      "complete": false
+    },
+    {
+      "title": "Database Index",
+      "description": "A database index is a data structure that improves the speed of data retrieval operations on a database table at the cost of additional writes and storage space.",
+      "complete": false
+    },
+    {
+      "title": "Debugging Tools",
+      "description": "Debugging tools are software applications that assist developers in identifying, analyzing, and fixing bugs in code through features like breakpoints, watches, and step execution.",
+      "complete": false
+    },
+    {
+      "title": "Dependency Injection",
+      "description": "Dependency Injection is a design pattern that allows a class to receive its dependencies from external sources rather than creating them internally, promoting loose coupling and easier testing.",
+      "complete": false
+    },
+    {
+      "title": "Design by Contract",
+      "description": "Design by Contract is a software correctness methodology where software designers define formal, precise, and verifiable interface specifications for software components.",
+      "complete": false
+    },
+    {
+      "title": "DevSecOps",
+      "description": "DevSecOps integrates security practices within the DevOps process, ensuring that security is a shared responsibility throughout the software development lifecycle.",
+      "complete": false
+    },
+    {
+      "title": "Distributed System",
+      "description": "A distributed system is a network of independent computers that work together to appear as a single coherent system, enabling scalability, fault tolerance, and resource sharing.",
+      "complete": false
+    },
+    {
+      "title": "Domain-Driven Design",
+      "description": "Domain-Driven Design is an approach to software development that focuses on modeling software to match a complex domain's business logic and rules closely.",
+      "complete": false
+    },
+    {
+      "title": "Dynamic Programming",
+      "description": "Dynamic programming is an algorithmic technique for solving problems by breaking them down into simpler subproblems and storing the results to avoid redundant computations.",
+      "complete": false
+    },
+    {
+      "title": "Encapsulation",
+      "description": "Encapsulation is an object-oriented programming principle that restricts direct access to some of an object's components, exposing only necessary parts through public methods.",
+      "complete": false
+    },
+    {
+      "title": "Entity-Relationship Diagram",
+      "description": "An Entity-Relationship Diagram (ERD) is a visual representation of entities, their attributes, and relationships within a database system.",
+      "complete": false
+    },
+    {
+      "title": "Event-Driven Architecture",
+      "description": "Event-driven architecture is a software design pattern where components communicate by producing and consuming events, enabling asynchronous and loosely coupled systems.",
+      "complete": false
+    },
+    {
+      "title": "Exception",
+      "description": "An exception is an event that disrupts the normal flow of a program's instructions, typically caused by errors such as invalid input, resource unavailability, or system failures.",
+      "complete": false
+    },
+    {
+      "title": "Exploratory Testing",
+      "description": "Exploratory testing is an informal software testing approach where testers actively explore the application without predefined test cases, using their knowledge and intuition to find defects.",
+      "complete": false
+    },
+    {
+      "title": "Feature Toggle",
+      "description": "Feature toggle is a technique that allows developers to enable or disable features in a software application dynamically without deploying new code, facilitating testing and gradual rollouts.",
+      "complete": false
+    },
+    {
+      "title": "Firewall",
+      "description": "A firewall is a network security device or software that monitors and controls incoming and outgoing network traffic based on predetermined security rules to protect systems from unauthorized access.",
+      "complete": false
+    },
+    {
+      "title": "Functional Requirement",
+      "description": "A functional requirement specifies a particular behavior or function that a software system must perform, such as calculations, data processing, or user interactions.",
+      "complete": false
+    },
+    {
+      "title": "Garbage Collection",
+      "description": "Garbage collection is an automatic memory management process that identifies and frees memory occupied by objects that are no longer in use by a program.",
+      "complete": false
+    },
+    {
+      "title": "Git Branch",
+      "description": "A Git branch is a parallel version of a repository that allows developers to work on different features or fixes independently before merging changes back into the main codebase.",
+      "complete": false
+    },
+    {
+      "title": "GraphQL",
+      "description": "GraphQL is a query language and runtime for APIs that enables clients to request exactly the data they need, improving efficiency and flexibility compared to traditional REST APIs.",
+      "complete": false
+    },
+    {
+      "title": "Hash Function",
+      "description": "A hash function is an algorithm that converts input data into a fixed-size string of characters, which typically appears random, used in data indexing, cryptography, and checksums.",
+      "complete": false
+    },
+    {
+      "title": "Heuristic",
+      "description": "A heuristic is a practical approach or rule-of-thumb used to solve problems faster when classic methods are too slow or fail to find an exact solution.",
+      "complete": false
+    },
+    {
+      "title": "HTTP Status Codes",
+      "description": "HTTP status codes are standardized codes returned by web servers to indicate the result of a client's request, such as 200 OK, 404 Not Found, or 500 Internal Server Error.",
+      "complete": false
+    },
+    {
+      "title": "IDE Plugin",
+      "description": "An IDE plugin is an add-on module that extends the functionality of an Integrated Development Environment by adding features like language support, debugging tools, or code analysis.",
+      "complete": false
+    },
+    {
+      "title": "Immutable Object",
+      "description": "An immutable object is an object whose state cannot be modified after it is created, promoting thread safety and predictability in software applications.",
+      "complete": false
+    },
+    {
+      "title": "Incident Management",
+      "description": "Incident management is the process of identifying, analyzing, and resolving unexpected events or disruptions in software systems to restore normal operations quickly.",
+      "complete": false
+    },
+    {
+      "title": "Inheritance Hierarchy",
+      "description": "An inheritance hierarchy is the structure of classes arranged in parent-child relationships, illustrating how subclasses inherit attributes and behaviors from superclasses.",
+      "complete": false
+    },
+    {
+      "title": "Infrastructure as Code (IaC)",
+      "description": "Infrastructure as Code is a practice of managing and provisioning computing infrastructure through machine-readable configuration files, enabling automation and consistency.",
+      "complete": false
+    },
+    {
+      "title": "Integration Platform",
+      "description": "An integration platform is a set of tools and services that enable different software applications and systems to communicate and work together seamlessly.",
+      "complete": false
+    },
+    {
+      "title": "Interface",
+      "description": "An interface is a programming construct that defines a contract of methods that implementing classes must provide, enabling polymorphism and abstraction.",
+      "complete": false
+    },
+    {
+      "title": "Internet of Things (IoT)",
+      "description": "The Internet of Things refers to the network of physical devices embedded with sensors, software, and connectivity to collect and exchange data over the internet.",
+      "complete": false
+    },
+    {
+      "title": "Iteration",
+      "description": "An iteration is a single development cycle in Agile methodologies where a set of features or tasks are completed and reviewed, allowing incremental progress.",
+      "complete": false
+    },
+    {
+      "title": "Java Virtual Machine (JVM)",
+      "description": "The Java Virtual Machine is an abstract computing machine that enables Java bytecode to be executed on any platform, providing Java's platform independence.",
+      "complete": false
+    },
+    {
+      "title": "JSON Web Token (JWT)",
+      "description": "JWT is a compact, URL-safe means of representing claims to be transferred between two parties, commonly used for authentication and information exchange.",
+      "complete": false
+    },
+    {
+      "title": "Kanban Board",
+      "description": "A Kanban board is a visual tool used to manage work by displaying tasks in columns representing different stages of the workflow, helping teams track progress and limit work in progress.",
+      "complete": false
+    },
+    {
+      "title": "Key Performance Indicator (KPI)",
+      "description": "A KPI is a measurable value that demonstrates how effectively a software project or process is achieving key business objectives.",
+      "complete": false
+    },
+    {
+      "title": "Latency",
+      "description": "Latency is the delay between a user's action and the response from the system, critical in assessing the performance of software and networks.",
+      "complete": false
+    },
+    {
+      "title": "Load Balancer",
+      "description": "A load balancer distributes incoming network or application traffic across multiple servers to ensure reliability, availability, and optimal resource use.",
+      "complete": false
+    },
+    {
+      "title": "Logging",
+      "description": "Logging is the practice of recording information about a software application's execution, errors, and events to assist in monitoring and debugging.",
+      "complete": false
+    },
+    {
+      "title": "Machine Code",
+      "description": "Machine code is the lowest-level programming language consisting of binary instructions that a computer's CPU can execute directly.",
+      "complete": false
+    },
+    {
+      "title": "Microservices",
+      "description": "Microservices is an architectural style where an application is composed of small, independent services that communicate over a network, enabling scalability and flexibility.",
+      "complete": false
+    },
+    {
+      "title": "Middleware",
+      "description": "Middleware is software that connects different applications or services, facilitating communication, data management, and interoperability in distributed systems.",
+      "complete": false
+    },
+    {
+      "title": "Mock Object",
+      "description": "A mock object is a simulated object used in unit testing to mimic the behavior of real components, allowing isolation of the unit under test.",
+      "complete": false
+    },
+    {
+      "title": "Monolithic Architecture",
+      "description": "Monolithic architecture is a traditional software design where all components are interconnected and interdependent within a single application.",
+      "complete": false
+    },
+    {
+      "title": "Mutation Testing",
+      "description": "Mutation testing is a technique that evaluates the quality of test cases by introducing small changes (mutations) to the code and checking if tests detect the errors.",
+      "complete": false
+    },
+    {
+      "title": "Namespace",
+      "description": "A namespace is a container that holds a set of identifiers such as variable and function names, helping to organize code and avoid naming conflicts in large software projects.",
+      "complete": false
+    },
+    {
+      "title": "Network Protocol",
+      "description": "A network protocol is a set of rules and conventions that govern communication between devices over a network, ensuring data is transmitted accurately and efficiently.",
+      "complete": false
+    },
+    {
+      "title": "Normalization",
+      "description": "Normalization is the process of organizing data in a database to reduce redundancy and improve data integrity by dividing tables and defining relationships according to rules called normal forms.",
+      "complete": false
+    },
+    {
+      "title": "Object Pool",
+      "description": "An object pool is a design pattern that pre-instantiates a set of reusable objects to improve performance and resource management in software applications.",
+      "complete": false
+    },
+    {
+      "title": "Observer Pattern",
+      "description": "The Observer Pattern is a behavioral design pattern where an object, called the subject, maintains a list of dependents, called observers, and notifies them automatically of any state changes.",
+      "complete": false
+    },
+    {
+      "title": "OpenAPI Specification",
+      "description": "OpenAPI Specification is a standard, language-agnostic interface description for RESTful APIs that allows humans and computers to discover and understand the capabilities of a service without access to source code.",
+      "complete": false
+    },
+    {
+      "title": "ORM (Object-Relational Mapping)",
+      "description": "ORM is a programming technique that converts data between incompatible type systems in object-oriented programming languages and relational databases, simplifying database interactions.",
+      "complete": false
+    },
+    {
+      "title": "Pair Programming",
+      "description": "Pair programming is an Agile software development technique where two programmers work together at one workstation, collaboratively writing and reviewing code to improve quality and knowledge sharing.",
+      "complete": false
+    },
+    {
+      "title": "Performance Bottleneck",
+      "description": "A performance bottleneck is a part of a system that significantly limits overall system performance, often requiring optimization to improve throughput or responsiveness.",
+      "complete": false
+    },
+    {
+      "title": "Polymorphism",
+      "description": "Polymorphism is an object-oriented programming concept where objects of different classes can be treated as instances of the same class through a common interface, allowing for flexible and reusable code.",
+      "complete": false
+    },
+    {
+      "title": "Process",
+      "description": "A process is an instance of a running program that contains the program code and its current activity, including the program counter, registers, and variables.",
+      "complete": false
+    },
+    {
+      "title": "Proxy Pattern",
+      "description": "The Proxy Pattern is a structural design pattern where a proxy object controls access to another object, adding functionality such as lazy loading, access control, or logging.",
+      "complete": false
+    },
+    {
+      "title": "Queue",
+      "description": "A queue is a linear data structure that follows the First In, First Out (FIFO) principle, where elements are added at the rear and removed from the front, commonly used in scheduling and buffering.",
+      "complete": false
+    },
+    {
+      "title": "Race Condition",
+      "description": "A race condition occurs when the behavior of software depends on the sequence or timing of uncontrollable events such as thread scheduling, leading to unpredictable results.",
+      "complete": false
+    },
+    {
+      "title": "Reactive Programming",
+      "description": "Reactive programming is a programming paradigm oriented around data streams and the propagation of change, enabling asynchronous and event-driven applications.",
+      "complete": false
+    },
+    {
+      "title": "Refactoring",
+      "description": "Refactoring is the disciplined technique of restructuring existing code to improve its internal structure, readability, and maintainability without altering its external behavior or functionality.",
+      "complete": false
+    },
+    {
+      "title": "Regression Testing",
+      "description": "Regression testing involves re-running previously conducted tests to verify that recent code changes have not adversely affected existing functionality, ensuring software stability over time.",
+      "complete": false
+    },
+    {
+      "title": "Repository",
+      "description": "A repository is a central location where software source code, documentation, and related artifacts are stored and managed, often using version control systems like Git.",
+      "complete": false
+    },
+    {
+      "title": "REST (Representational State Transfer)",
+      "description": "REST is an architectural style for designing networked applications that use stateless communication protocols, typically HTTP, to create scalable and maintainable web services.",
+      "complete": false
+    },
+    {
+      "title": "Rollback",
+      "description": "Rollback is the process of reverting a software system or database to a previous stable state after a failed update or transaction to maintain consistency and reliability.",
+      "complete": false
+    },
+    {
+      "title": "Runtime",
+      "description": "Runtime refers to the period during which a program is executing, as well as the environment and libraries that support the execution of software applications.",
+      "complete": false
+    },
+    {
+      "title": "SaaS (Software as a Service)",
+      "description": "Software as a Service is a cloud computing model where software applications are delivered over the internet on a subscription basis, eliminating the need for local installation and maintenance.",
+      "complete": false
+    },
+    {
+      "title": "Sandbox",
+      "description": "A sandbox is a controlled environment used for testing or running untrusted code safely, isolating it from the rest of the system to prevent damage or security breaches.",
+      "complete": false
+    },
+    {
+      "title": "Scrum",
+      "description": "Scrum is an Agile framework for managing complex software projects using iterative development cycles called sprints, emphasizing teamwork, accountability, and continuous improvement.",
+      "complete": false
+    },
+    {
+      "title": "SDK (Software Development Kit)",
+      "description": "A Software Development Kit is a collection of software tools, libraries, documentation, and code samples that developers use to create applications for specific platforms or frameworks.",
+      "complete": false
+    },
+    {
+      "title": "Semaphore",
+      "description": "A semaphore is a synchronization primitive used to control access to a common resource in concurrent programming by multiple processes or threads.",
+      "complete": false
+    },
+    {
+      "title": "Serialization",
+      "description": "Serialization is the process of converting an object or data structure into a format that can be stored or transmitted and later reconstructed.",
+      "complete": false
+    },
+    {
+      "title": "Service-Oriented Architecture (SOA)",
+      "description": "SOA is an architectural pattern where software components provide services to other components over a network through standardized interfaces.",
+      "complete": false
+    },
+    {
+      "title": "Singleton Pattern",
+      "description": "The Singleton Pattern ensures that a class has only one instance and provides a global point of access to that instance.",
+      "complete": false
+    },
+    {
+      "title": "Software Configuration Management (SCM)",
+      "description": "SCM is the discipline of tracking and controlling changes in software, including version control, build management, and change control.",
+      "complete": false
+    },
+    {
+      "title": "Software Development Life Cycle (SDLC)",
+      "description": "SDLC is a structured process for developing software applications through phases such as planning, design, implementation, testing, deployment, and maintenance.",
+      "complete": false
+    },
+    {
+      "title": "Software Testing Life Cycle (STLC)",
+      "description": "STLC defines the phases involved in testing software, including requirement analysis, test planning, test case development, environment setup, test execution, and closure.",
+      "complete": false
+    },
+    {
+      "title": "Source Control",
+      "description": "Source control is the practice of managing changes to source code using tools that track revisions, enable collaboration, and maintain history.",
+      "complete": false
+    },
+    {
+      "title": "Spike",
+      "description": "A spike is a time-boxed research or prototyping activity in Agile development used to explore solutions or gather information for complex problems.",
+      "complete": false
+    },
+    {
+      "title": "SQL Injection",
+      "description": "SQL injection is a security vulnerability where an attacker inserts malicious SQL code into input fields, potentially compromising the database.",
+      "complete": false
+    },
+    {
+      "title": "Stack",
+      "description": "A stack is a linear data structure that follows the Last In, First Out (LIFO) principle, where elements are added and removed from the top of the stack.",
+      "complete": false
+    },
+    {
+      "title": "Static Code Analysis",
+      "description": "Static code analysis involves examining source code without executing it to identify potential errors, code smells, or security vulnerabilities.",
+      "complete": false
+    },
+    {
+      "title": "State Machine",
+      "description": "A state machine is a computational model used to design algorithms by defining states, transitions, and actions based on inputs.",
+      "complete": false
+    },
+    {
+      "title": "Story Point",
+      "description": "A story point is a unit of measure used in Agile to estimate the effort required to implement a user story, considering complexity, risks, and time.",
+      "complete": false
+    },
+    {
+      "title": "Stress Testing",
+      "description": "Stress testing evaluates how a software system behaves under extreme or peak load conditions to identify breaking points and ensure robustness.",
+      "complete": false
+    },
+    {
+      "title": "Stub",
+      "description": "A stub is a piece of code used to simulate the behavior of some components during testing, allowing isolation of the unit under test.",
+      "complete": false
+    },
+    {
+      "title": "Syntax Error",
+      "description": "A syntax error occurs when code violates the grammatical rules of a programming language, preventing compilation or interpretation.",
+      "complete": false
+    },
+    {
+      "title": "Technical Debt",
+      "description": "Technical debt refers to the implied cost of additional rework caused by choosing an easy or limited solution now instead of a better approach that would take longer.",
+      "complete": false
+    },
+    {
+      "title": "Test Automation Framework",
+      "description": "A test automation framework is a set of guidelines, tools, and libraries that facilitate automated testing by providing reusable components and standard practices.",
+      "complete": false
+    },
+    {
+      "title": "Test Driven Development (TDD)",
+      "description": "TDD is a software development approach where tests are written before the code, ensuring that software meets requirements and is designed for testability.",
+      "complete": false
+    },
+    {
+      "title": "Thread Safety",
+      "description": "Thread safety ensures that code or data structures function correctly when accessed by multiple threads concurrently without causing data corruption or unexpected behavior.",
+      "complete": false
+    },
+    {
+      "title": "Tokenization",
+      "description": "Tokenization is the process of breaking text into tokens, such as words or symbols, commonly used in parsing and lexical analysis.",
+      "complete": false
+    },
+    {
+      "title": "Traceability Matrix",
+      "description": "A traceability matrix is a document that maps and traces user requirements with test cases to ensure all requirements are covered by tests.",
+      "complete": false
+    },
+    {
+      "title": "Transaction",
+      "description": "A transaction is a sequence of operations performed as a single logical unit of work, ensuring properties like atomicity, consistency, isolation, and durability (ACID) in databases.",
+      "complete": false
+    },
+    {
+      "title": "Tree Data Structure",
+      "description": "A tree is a hierarchical data structure consisting of nodes, where each node has zero or more child nodes, used to represent relationships and organize data efficiently.",
+      "complete": false
+    },
+    {
+      "title": "Unit Test",
+      "description": "A unit test is a type of software test that verifies the correctness of a small part of the application, such as a function or method, in isolation from other parts.",
+      "complete": false
+    },
+    {
+      "title": "User Story",
+      "description": "A user story is a short, simple description of a software feature from the perspective of an end user, used in Agile development to capture requirements.",
+      "complete": false
+    },
+    {
+      "title": "Version Control System (VCS)",
+      "description": "A version control system is software that helps manage changes to source code over time, enabling multiple developers to collaborate and maintain code history.",
+      "complete": false
+    },
+    {
+      "title": "Virtualization",
+      "description": "Virtualization is the creation of virtual versions of physical resources such as servers, storage devices, or networks, enabling efficient resource utilization and isolation.",
+      "complete": false
+    },
+    {
+      "title": "Waterfall Model",
+      "description": "The Waterfall Model is a linear and sequential software development process where each phase must be completed before the next begins, emphasizing thorough documentation and upfront planning.",
+      "complete": false
+    },
+    {
+      "title": "WebSocket",
+      "description": "WebSocket is a protocol providing full-duplex communication channels over a single TCP connection, enabling real-time data exchange between client and server.",
+      "complete": false
+    },
+    {
+      "title": "Workflow Automation",
+      "description": "Workflow automation uses technology to automate business processes and tasks, improving efficiency and reducing manual effort.",
+      "complete": false
+    },
+    {
+      "title": "XML Schema",
+      "description": "XML Schema defines the structure, content, and semantics of XML documents, enabling validation and data integrity.",
+      "complete": false
+    },
+    {
+      "title": "Zero Downtime Deployment",
+      "description": "Zero downtime deployment is a release strategy that allows software updates without interrupting service availability to users.",
+      "complete": false
+    }
+  ]
+
