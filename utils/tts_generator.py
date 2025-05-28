@@ -25,38 +25,91 @@ class TextToSpeechGenerator:
         self._initialize_engine()
 
     def _initialize_engine(self):
-        """Initialize the pyttsx3 TTS engine with settings."""
+        """Initialize the TTS engine with fallback options."""
+        self.engine = None
+        self.tts_method = None
+
+        # Try different TTS methods in order of preference
+        tts_methods = [
+            ("pyttsx3", self._init_pyttsx3),
+            ("system_say", self._init_system_say),
+            ("espeak", self._init_espeak)
+        ]
+
+        for method_name, init_func in tts_methods:
+            try:
+                if init_func():
+                    self.tts_method = method_name
+                    logging.info(f"TTS engine initialized successfully using: {method_name}")
+                    return
+            except Exception as e:
+                logging.warning(f"Failed to initialize {method_name}: {e}")
+                continue
+
+        # If all methods fail, raise an error
+        raise Exception(
+            "No TTS engine could be initialized. Please install: pip install pyobjc-framework-Cocoa (macOS) or espeak (Linux)")
+
+    def _init_pyttsx3(self):
+        """Try to initialize pyttsx3."""
+        import pyttsx3
+        self.engine = pyttsx3.init()
+
+        # Set rate (words per minute)
+        self.engine.setProperty('rate', self.tts_settings['rate'])
+
+        # Set volume (0.0 to 1.0)
+        self.engine.setProperty('volume', self.tts_settings['volume'])
+
+        # Set voice if specified
+        if self.tts_settings.get('voice_id'):
+            voices = self.engine.getProperty('voices')
+            for voice in voices:
+                if self.tts_settings['voice_id'] in voice.id:
+                    self.engine.setProperty('voice', voice.id)
+                    break
+
+        self._log_available_voices()
+        return True
+
+    def _init_system_say(self):
+        """Try to use macOS 'say' command."""
+        import subprocess
+        import platform
+
+        if platform.system() != "Darwin":
+            return False
+
+        # Test if 'say' command works
         try:
-            self.engine = pyttsx3.init()
+            subprocess.run(['say', '--version'], capture_output=True, check=True)
+            self.engine = "system_say"
+            return True
+        except (subprocess.CalledProcessError, FileNotFoundError):
+            return False
 
-            # Set rate (words per minute)
-            self.engine.setProperty('rate', self.tts_settings['rate'])
+    def _init_espeak(self):
+        """Try to use espeak."""
+        import subprocess
 
-            # Set volume (0.0 to 1.0)
-            self.engine.setProperty('volume', self.tts_settings['volume'])
-
-            # Set voice if specified
-            if self.tts_settings.get('voice_id'):
-                voices = self.engine.getProperty('voices')
-                for voice in voices:
-                    if self.tts_settings['voice_id'] in voice.id:
-                        self.engine.setProperty('voice', voice.id)
-                        break
-
-            logging.info("TTS engine initialized successfully")
-            self._log_available_voices()
-
-        except Exception as e:
-            logging.error(f"Failed to initialize TTS engine: {e}")
-            raise
+        # Test if espeak is available
+        try:
+            subprocess.run(['espeak', '--version'], capture_output=True, check=True)
+            self.engine = "espeak"
+            return True
+        except (subprocess.CalledProcessError, FileNotFoundError):
+            return False
 
     def _log_available_voices(self):
-        """Log available TTS voices for debugging."""
+        """Log available TTS voices for debugging (pyttsx3 only)."""
         try:
-            voices = self.engine.getProperty('voices')
-            logging.info(f"Available TTS voices: {len(voices)}")
-            for i, voice in enumerate(voices[:3]):  # Log first 3 voices
-                logging.debug(f"Voice {i}: {voice.id} - {voice.name}")
+            if self.tts_method == "pyttsx3" and hasattr(self.engine, 'getProperty'):
+                voices = self.engine.getProperty('voices')
+                logging.info(f"Available TTS voices: {len(voices)}")
+                for i, voice in enumerate(voices[:3]):  # Log first 3 voices
+                    logging.debug(f"Voice {i}: {voice.id} - {voice.name}")
+            else:
+                logging.info(f"Voice listing not available for {self.tts_method}")
         except Exception as e:
             logging.warning(f"Could not retrieve voice information: {e}")
 
@@ -93,12 +146,19 @@ class TextToSpeechGenerator:
             # Ensure temp directory exists
             Path(self.temp_dir).mkdir(parents=True, exist_ok=True)
 
-            # Generate speech
-            logging.info(f"Generating speech for text ({len(text)} characters)...")
+            # Generate speech based on available method
+            logging.info(f"Generating speech using {self.tts_method} for text ({len(text)} characters)...")
 
-            # Save to file
-            self.engine.save_to_file(text, str(output_path))
-            self.engine.runAndWait()
+            success = False
+            if self.tts_method == "pyttsx3":
+                success = self._generate_pyttsx3(text, output_path)
+            elif self.tts_method == "system_say":
+                success = self._generate_system_say(text, output_path)
+            elif self.tts_method == "espeak":
+                success = self._generate_espeak(text, output_path)
+
+            if not success:
+                raise Exception(f"Failed to generate speech using {self.tts_method}")
 
             # Verify file was created
             if not output_path.exists():
@@ -119,6 +179,68 @@ class TextToSpeechGenerator:
         except Exception as e:
             logging.error(f"TTS generation failed: {e}")
             return False, None, None
+
+    def _generate_pyttsx3(self, text: str, output_path: Path) -> bool:
+        """Generate speech using pyttsx3."""
+        try:
+            self.engine.save_to_file(text, str(output_path))
+            self.engine.runAndWait()
+            return True
+        except Exception as e:
+            logging.error(f"pyttsx3 generation failed: {e}")
+            return False
+
+    def _generate_system_say(self, text: str, output_path: Path) -> bool:
+        """Generate speech using macOS 'say' command."""
+        try:
+            import subprocess
+
+            # Use macOS say command
+            cmd = [
+                'say',
+                '-r', str(self.tts_settings['rate']),
+                '-o', str(output_path),
+                '--data-format=LEI16@22050',
+                text
+            ]
+
+            result = subprocess.run(cmd, capture_output=True, text=True, timeout=60)
+
+            if result.returncode == 0:
+                return True
+            else:
+                logging.error(f"say command failed: {result.stderr}")
+                return False
+
+        except Exception as e:
+            logging.error(f"System say generation failed: {e}")
+            return False
+
+    def _generate_espeak(self, text: str, output_path: Path) -> bool:
+        """Generate speech using espeak."""
+        try:
+            import subprocess
+
+            # Use espeak command
+            cmd = [
+                'espeak',
+                '-s', str(self.tts_settings['rate']),
+                '-a', str(int(self.tts_settings['volume'] * 200)),  # espeak uses 0-200
+                '-w', str(output_path),
+                text
+            ]
+
+            result = subprocess.run(cmd, capture_output=True, text=True, timeout=60)
+
+            if result.returncode == 0:
+                return True
+            else:
+                logging.error(f"espeak command failed: {result.stderr}")
+                return False
+
+        except Exception as e:
+            logging.error(f"espeak generation failed: {e}")
+            return False
 
     def _convert_to_mp3(self, wav_path: Path, base_filename: str) -> Tuple[str, float]:
         """Convert WAV to MP3 and return path and duration."""
@@ -216,10 +338,10 @@ class TextToSpeechGenerator:
                     Path(file_path).unlink()
                 except:
                     pass
-                logging.info("TTS engine test successful")
+                logging.info(f"TTS engine test successful using {self.tts_method}")
                 return True
             else:
-                logging.error("TTS engine test failed")
+                logging.error(f"TTS engine test failed using {self.tts_method}")
                 return False
 
         except Exception as e:
@@ -247,7 +369,7 @@ class TextToSpeechGenerator:
     def __del__(self):
         """Cleanup TTS engine on destruction."""
         try:
-            if self.engine:
+            if self.engine and self.tts_method == "pyttsx3" and hasattr(self.engine, 'stop'):
                 self.engine.stop()
         except:
             pass

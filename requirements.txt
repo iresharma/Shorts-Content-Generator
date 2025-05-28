@@ -4,3 +4,11 @@ Pillow==10.0.1
 moviepy==1.0.3
 python-dotenv==1.0.0
 pydub==0.25.1
+
+# macOS specific (install if pyttsx3 fails on macOS)
+# pyobjc-framework-Cocoa>=9.0
+# pyobjc-framework-AVFoundation>=9.0
+
+# Alternative TTS dependencies (optional)
+# Install espeak on Linux: sudo apt-get install espeak espeak-data
+# Install espeak on macOS: brew install espeak
