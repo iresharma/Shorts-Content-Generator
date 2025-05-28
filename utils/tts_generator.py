@@ -217,17 +217,20 @@ class TextToSpeechGenerator:
             return False
 
     def _generate_espeak(self, text: str, output_path: Path) -> bool:
-        """Generate speech using espeak."""
+        """Generate speech using espeak with improved voice quality."""
         try:
             import subprocess
 
-            # Use espeak command
+            # Enhanced espeak command for better voice quality
             cmd = [
                 'espeak',
-                '-s', str(self.tts_settings['rate']),
-                '-a', str(int(self.tts_settings['volume'] * 200)),  # espeak uses 0-200
+                '-s', str(max(140, min(180, self.tts_settings['rate']))),  # Optimal speed range
+                '-a', str(int(self.tts_settings['volume'] * 180)),  # Slightly lower volume for clarity
+                '-p', '40',  # Pitch (0-99, 40 is more natural)
+                '-g', '5',  # Gap between words (ms) for clarity
+                '-v', 'en+f3',  # Better English voice variant (female voice 3)
                 '-w', str(output_path),
-                text
+                self._enhance_text_for_speech(text)
             ]
 
             result = subprocess.run(cmd, capture_output=True, text=True, timeout=60)
@@ -235,12 +238,36 @@ class TextToSpeechGenerator:
             if result.returncode == 0:
                 return True
             else:
-                logging.error(f"espeak command failed: {result.stderr}")
-                return False
+                # Try fallback with simpler voice if the enhanced one fails
+                logging.warning("Enhanced espeak voice failed, trying fallback...")
+                cmd_fallback = [
+                    'espeak',
+                    '-s', str(self.tts_settings['rate']),
+                    '-a', str(int(self.tts_settings['volume'] * 180)),
+                    '-p', '45',
+                    '-g', '3',
+                    '-w', str(output_path),
+                    self._enhance_text_for_speech(text)
+                ]
+
+                result = subprocess.run(cmd_fallback, capture_output=True, text=True, timeout=60)
+                return result.returncode == 0
 
         except Exception as e:
             logging.error(f"espeak generation failed: {e}")
             return False
+
+    def _enhance_text_for_speech(self, text: str) -> str:
+        """Enhance text for more natural speech synthesis."""
+        # Add pauses for better pacing
+        enhanced_text = text.replace('.', '... ')  # Longer pauses after sentences
+        enhanced_text = enhanced_text.replace(',', ', ')  # Short pauses after commas
+        enhanced_text = enhanced_text.replace(':', ': ')  # Pause after colons
+
+        # Add emphasis markers for important words
+        enhanced_text = enhanced_text.replace('Today we will talk about', '[[Today we will talk about]]')
+
+        return enhanced_text
 
     def _convert_to_mp3(self, wav_path: Path, base_filename: str) -> Tuple[str, float]:
         """Convert WAV to MP3 and return path and duration."""
