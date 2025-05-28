@@ -8,12 +8,14 @@
   {
     "title": "Agile",
     "description": "Agile is a flexible and iterative approach to software development that promotes continuous collaboration between cross-functional teams, adaptive planning, early delivery of working software, and continuous improvement. It emphasizes responding effectively to changing requirements and customer feedback throughout the development lifecycle.",
-    "complete": false
+    "complete": true,
+    "completed_at": "2025-05-29T05:03:43.134055"
   },
   {
     "title": "Algorithm",
     "description": "An algorithm is a well-defined, step-by-step set of instructions designed to perform a specific task or solve a particular problem efficiently and correctly. Algorithms form the foundation of computer programming and software development, enabling automation of complex computations and data processing.",
-    "complete": false
+    "complete": true,
+    "completed_at": "2025-05-29T05:21:14.716962"
   },
   {
     "title": "API",

@@ -1,6 +1,7 @@
 # main.py
-import os
+
 import sys
+import os
 import logging
 import traceback
 from pathlib import Path
@@ -217,6 +218,7 @@ class MainOrchestrator:
         status = {
             "config_valid": False,
             "tts_working": False,
+            "tts_method": None,
             "api_accessible": False,
             "output_dir_writable": False,
             "topics_available": False,
@@ -227,8 +229,23 @@ class MainOrchestrator:
             # Check configuration
             status["config_valid"] = self.config.validate_configuration()
 
-            # Check TTS
+            # Check TTS and get method info
             status["tts_working"] = self.tts_generator.test_tts_engine()
+            status["tts_method"] = self.tts_generator.tts_method
+
+            # Add TTS quality info
+            if status["tts_method"] == "coqui_tts":
+                status["tts_quality"] = "⭐⭐⭐⭐ Neural (Local)"
+                if hasattr(self.tts_generator, 'coqui_model_name'):
+                    status["tts_model"] = self.tts_generator.coqui_model_name
+            elif status["tts_method"] == "elevenlabs":
+                status["tts_quality"] = "⭐⭐⭐⭐⭐ Premium (API)"
+            elif status["tts_method"] == "system_say":
+                status["tts_quality"] = "⭐⭐⭐ Good (System)"
+            elif status["tts_method"] == "espeak":
+                status["tts_quality"] = "⭐⭐ Basic (Robotic)"
+            else:
+                status["tts_quality"] = "Unknown"
 
             # Check API (simple test)
             test_results = self.image_fetcher.search_images("technology", per_page=1)
@@ -309,7 +326,16 @@ def main():
 
             print("📊 System Status:")
             print(f"   Config valid: {'✅' if status['config_valid'] else '❌'}")
-            print(f"   TTS working: {'✅' if status['tts_working'] else '❌'}")
+
+            # Enhanced TTS status display
+            tts_status = '✅' if status['tts_working'] else '❌'
+            tts_method = status.get('tts_method', 'unknown')
+            tts_quality = status.get('tts_quality', '')
+            print(f"   TTS working: {tts_status} ({tts_method}) {tts_quality}")
+
+            if status.get('tts_model'):
+                print(f"   TTS model: {status['tts_model']}")
+
             print(f"   API accessible: {'✅' if status['api_accessible'] else '❌'}")
             print(f"   Output writable: {'✅' if status['output_dir_writable'] else '❌'}")
             print(f"   Topics available: {'✅' if status['topics_available'] else '❌'}")
@@ -318,6 +344,15 @@ def main():
                 topics = status["stats"]["topics"]
                 print(
                     f"   Topics: {topics['completed']}/{topics['total']} completed ({topics['completion_percentage']}%)")
+
+            # Show TTS recommendation if not using best option
+            if status.get('tts_method') == 'espeak':
+                print("\n💡 Recommendation: Install Coqui TTS for much better voice quality:")
+                print("   pip install coqui-tts")
+            elif status.get('tts_method') not in ['coqui_tts', 'elevenlabs']:
+                print("\n💡 Consider upgrading TTS for better voice quality:")
+                print("   Coqui TTS (local): pip install coqui-tts")
+                print("   ElevenLabs (cloud): pip install elevenlabs")
 
             # Exit with error code if any critical component is failing
             critical_checks = [status['config_valid'], status['tts_working'],

@@ -29,8 +29,10 @@ class TextToSpeechGenerator:
         self.engine = None
         self.tts_method = None
 
-        # Try different TTS methods in order of preference
+        # Try different TTS methods in order of preference (Coqui TTS first)
         tts_methods = [
+            ("coqui_tts", self._init_coqui_tts),
+            ("elevenlabs", self._init_elevenlabs),
             ("pyttsx3", self._init_pyttsx3),
             ("system_say", self._init_system_say),
             ("espeak", self._init_espeak)
@@ -48,7 +50,86 @@ class TextToSpeechGenerator:
 
         # If all methods fail, raise an error
         raise Exception(
-            "No TTS engine could be initialized. Please install: pip install pyobjc-framework-Cocoa (macOS) or espeak (Linux)")
+            "No TTS engine could be initialized. Please install coqui-tts for best quality: pip install coqui-tts")
+
+    def _init_elevenlabs(self):
+        """Try to initialize ElevenLabs API."""
+        try:
+            from elevenlabs.client import ElevenLabs
+            import os
+
+            # Check for API key
+            api_key = os.getenv("ELEVENLABS_API_KEY")
+            if not api_key:
+                logging.info("ElevenLabs API key not found, skipping...")
+                return False
+
+            # Test the API
+            self.engine = ElevenLabs(api_key=api_key)
+
+            # Test with a simple call
+            test_result = self.engine.voices.list()
+            if test_result:
+                logging.info(f"ElevenLabs initialized with {len(test_result.voices)} voices available")
+                return True
+            return False
+
+        except ImportError:
+            logging.info("ElevenLabs not installed. Install with: pip install elevenlabs")
+            return False
+        except Exception as e:
+            logging.warning(f"ElevenLabs API test failed: {e}")
+            return False
+
+    def _init_coqui_tts(self):
+        """Try to initialize Coqui TTS with the best available model."""
+        try:
+            from TTS.api import TTS
+            import torch
+
+            # Try different models in order of quality (best first)
+            model_options = [
+                # High-quality neural models
+                "tts_models/en/vctk/vits",  # Very high quality, multi-speaker
+                "tts_models/en/ljspeech/vits",  # High quality, single speaker
+                "tts_models/en/ljspeech/tacotron2-DDC",  # Fast, reliable fallback
+            ]
+
+            device = "cuda" if torch.cuda.is_available() else "cpu"
+            logging.info(f"Initializing Coqui TTS on device: {device}")
+
+            for model_name in model_options:
+                try:
+                    logging.info(f"Trying Coqui TTS model: {model_name}")
+                    self.engine = TTS(model_name=model_name, progress_bar=False).to(device)
+
+                    # Store model info for voice selection
+                    self.coqui_model_name = model_name
+                    self.coqui_device = device
+
+                    # Check if model supports speakers
+                    if hasattr(self.engine, 'speakers') and self.engine.speakers:
+                        self.coqui_speakers = self.engine.speakers
+                        logging.info(f"Model has {len(self.coqui_speakers)} speakers available")
+                    else:
+                        self.coqui_speakers = None
+
+                    logging.info(f"Coqui TTS initialized successfully with model: {model_name}")
+                    return True
+
+                except Exception as e:
+                    logging.warning(f"Failed to load model {model_name}: {e}")
+                    continue
+
+            logging.error("All Coqui TTS models failed to load")
+            return False
+
+        except ImportError:
+            logging.info("Coqui TTS not installed. Install with: pip install coqui-tts")
+            return False
+        except Exception as e:
+            logging.warning(f"Coqui TTS initialization failed: {e}")
+            return False
 
     def _init_pyttsx3(self):
         """Try to initialize pyttsx3."""
@@ -150,7 +231,11 @@ class TextToSpeechGenerator:
             logging.info(f"Generating speech using {self.tts_method} for text ({len(text)} characters)...")
 
             success = False
-            if self.tts_method == "pyttsx3":
+            if self.tts_method == "elevenlabs":
+                success = self._generate_elevenlabs(text, output_path)
+            elif self.tts_method == "coqui_tts":
+                success = self._generate_coqui_tts(text, output_path)
+            elif self.tts_method == "pyttsx3":
                 success = self._generate_pyttsx3(text, output_path)
             elif self.tts_method == "system_say":
                 success = self._generate_system_say(text, output_path)
@@ -179,6 +264,88 @@ class TextToSpeechGenerator:
         except Exception as e:
             logging.error(f"TTS generation failed: {e}")
             return False, None, None
+
+    def _generate_elevenlabs(self, text: str, output_path: Path) -> bool:
+        """Generate speech using ElevenLabs API."""
+        try:
+            # Enhanced text for better speech quality
+            enhanced_text = self._enhance_text_for_speech(text)
+
+            # Generate audio
+            audio = self.engine.text_to_speech.convert(
+                text=enhanced_text,
+                voice_id="JBFqnCBsd6RMkjVDRZzb",  # Good default voice (Gender: Female)
+                model_id="eleven_multilingual_v2",
+                output_format="mp3_44100_128"
+            )
+
+            # Save to temporary MP3 file first
+            temp_mp3 = output_path.with_suffix('.mp3')
+            with open(temp_mp3, 'wb') as f:
+                for chunk in audio:
+                    if isinstance(chunk, bytes):
+                        f.write(chunk)
+
+            # Convert MP3 to WAV for consistency
+            from pydub import AudioSegment
+            audio_segment = AudioSegment.from_mp3(temp_mp3)
+            audio_segment.export(output_path, format="wav")
+
+            # Clean up temp MP3
+            try:
+                temp_mp3.unlink()
+            except:
+                pass
+
+            return True
+
+        except Exception as e:
+            logging.error(f"ElevenLabs generation failed: {e}")
+            return False
+
+    def _generate_coqui_tts(self, text: str, output_path: Path) -> bool:
+        """Generate speech using Coqui TTS with optimal settings."""
+        try:
+            # Enhanced text for better speech quality
+            enhanced_text = self._enhance_text_for_speech(text)
+
+            # Choose speaker for multi-speaker models
+            speaker = None
+            if self.coqui_speakers:
+                # Choose a good quality speaker
+                preferred_speakers = ["p225", "p226", "p227", "p228", "p229", "p230", "p231"]  # VCTK dataset speakers
+                for pref_speaker in preferred_speakers:
+                    if pref_speaker in self.coqui_speakers:
+                        speaker = pref_speaker
+                        logging.info(f"Using Coqui TTS speaker: {speaker}")
+                        break
+
+                # Fallback to first available speaker
+                if not speaker and self.coqui_speakers:
+                    speaker = self.coqui_speakers[0]
+                    logging.info(f"Using fallback Coqui TTS speaker: {speaker}")
+
+            # Generate speech with optimal parameters
+            if speaker and "vctk" in self.coqui_model_name:
+                # Multi-speaker model
+                self.engine.tts_to_file(
+                    text=enhanced_text,
+                    file_path=str(output_path),
+                    speaker=speaker
+                )
+            else:
+                # Single speaker model
+                self.engine.tts_to_file(
+                    text=enhanced_text,
+                    file_path=str(output_path)
+                )
+
+            logging.info(f"Coqui TTS generation completed: {output_path}")
+            return True
+
+        except Exception as e:
+            logging.error(f"Coqui TTS generation failed: {e}")
+            return False
 
     def _generate_pyttsx3(self, text: str, output_path: Path) -> bool:
         """Generate speech using pyttsx3."""
@@ -258,16 +425,27 @@ class TextToSpeechGenerator:
             return False
 
     def _enhance_text_for_speech(self, text: str) -> str:
-        """Enhance text for more natural speech synthesis."""
-        # Add pauses for better pacing
-        enhanced_text = text.replace('.', '... ')  # Longer pauses after sentences
-        enhanced_text = enhanced_text.replace(',', ', ')  # Short pauses after commas
-        enhanced_text = enhanced_text.replace(':', ': ')  # Pause after colons
+        """Enhance text for more natural speech synthesis with modern TTS."""
+        if self.tts_method in ["elevenlabs", "coqui_tts"]:
+            # Modern TTS systems handle punctuation well, so minimal changes needed
+            enhanced_text = text.replace('...', '.')  # Clean up multiple dots
+            enhanced_text = enhanced_text.replace('  ', ' ')  # Remove double spaces
 
-        # Add emphasis markers for important words
-        enhanced_text = enhanced_text.replace('Today we will talk about', '[[Today we will talk about]]')
+            # Add slight pause after intro
+            if enhanced_text.startswith("Today we will talk about"):
+                enhanced_text = enhanced_text.replace("Today we will talk about", "Today, we will talk about")
 
-        return enhanced_text
+            return enhanced_text
+        else:
+            # Legacy enhancement for espeak/pyttsx3
+            enhanced_text = text.replace('.', '... ')  # Longer pauses after sentences
+            enhanced_text = enhanced_text.replace(',', ', ')  # Short pauses after commas
+            enhanced_text = enhanced_text.replace(':', ': ')  # Pause after colons
+
+            # Add emphasis markers for important words
+            enhanced_text = enhanced_text.replace('Today we will talk about', '[[Today we will talk about]]')
+
+            return enhanced_text
 
     def _convert_to_mp3(self, wav_path: Path, base_filename: str) -> Tuple[str, float]:
         """Convert WAV to MP3 and return path and duration."""
@@ -357,6 +535,8 @@ class TextToSpeechGenerator:
             test_text = "Testing text to speech engine."
             test_filename = "tts_test"
 
+            logging.info(f"Testing TTS engine: {self.tts_method}")
+
             success, file_path, duration = self.text_to_speech(test_text, test_filename)
 
             if success and file_path:
@@ -365,7 +545,16 @@ class TextToSpeechGenerator:
                     Path(file_path).unlink()
                 except:
                     pass
-                logging.info(f"TTS engine test successful using {self.tts_method}")
+
+                if self.tts_method == "coqui_tts":
+                    model_info = getattr(self, 'coqui_model_name', 'unknown')
+                    speakers_info = ""
+                    if hasattr(self, 'coqui_speakers') and self.coqui_speakers:
+                        speakers_info = f" with {len(self.coqui_speakers)} speakers"
+                    logging.info(f"Coqui TTS test successful - Model: {model_info}{speakers_info}")
+                else:
+                    logging.info(f"TTS engine test successful using {self.tts_method}")
+
                 return True
             else:
                 logging.error(f"TTS engine test failed using {self.tts_method}")
