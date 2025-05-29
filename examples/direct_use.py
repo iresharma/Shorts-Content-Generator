@@ -12,7 +12,7 @@ sys.path.insert(0, str(project_root))
 # Change to project directory for relative imports
 os.chdir(project_root)
 
-from main import MainOrchestrator
+from videoOrchestrator import VideoOrchestrator
 
 
 def example_single_generation():
@@ -31,7 +31,7 @@ def example_single_generation():
 
     try:
         # Create orchestrator with direct data
-        mo = MainOrchestrator.from_topic_data(data)
+        mo = VideoOrchestrator.from_topic_data(data)
 
         # Generate the video
         result = mo.generate()
@@ -95,7 +95,7 @@ def example_batch_generation():
             print(f"📹 Generating video {i}/{len(topics)}: {topic_data['title']}")
 
             # Create orchestrator for this topic
-            mo = MainOrchestrator.from_topic_data(topic_data)
+            mo = VideoOrchestrator.from_topic_data(topic_data)
 
             # Generate video
             result = mo.generate()

@@ -1,4 +1,4 @@
-# utils/pexels_fetcher.py
+# components/pexels_fetcher.py
 
 import os
 import requests

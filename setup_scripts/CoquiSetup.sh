@@ -99,7 +99,7 @@ fi
 
 echo ""
 echo "🧪 Testing the complete system..."
-python main.py --mode status
+python videoOrchestrator.py --mode status
 
 echo ""
 echo "🎯 Next Steps:"

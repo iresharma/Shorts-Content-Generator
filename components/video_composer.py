@@ -1,4 +1,4 @@
-# utils/video_composer.py
+# components/video_composer.py
 
 import os
 import logging

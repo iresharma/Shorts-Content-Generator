@@ -1,4 +1,4 @@
-# utils/topic_manager.py
+# components/topic_manager.py
 
 import json
 import logging

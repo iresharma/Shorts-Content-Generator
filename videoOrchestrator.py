@@ -1,4 +1,4 @@
-# main.py
+# videoOrchestrator.py
 
 import sys
 import os
@@ -12,16 +12,16 @@ from typing import Optional, Dict, Any
 sys.path.append(str(Path(__file__).parent))
 
 from config.config_manager import ConfigManager
-from utils.topic_manager import TopicManager
-from utils.tts_generator import TextToSpeechGenerator
-from utils.pexels_fetcher import PexelsImageFetcher
-from utils.video_composer import VideoComposer
+from components.topic_manager import TopicManager
+from components.tts_generator import TextToSpeechGenerator
+from components.pexels_fetcher import PexelsImageFetcher
+from components.video_composer import VideoComposer
 
 
-class MainOrchestrator:
+class VideoOrchestrator:
     """Main orchestrator for YouTube Shorts generation workflow."""
 
-    def __init__(self, topic_data=None, config_file: str = ".env"):
+    def __init__(self, topic_data=None, pexels_api_key: str = None, config_file: str = ".env"):
         """
         Initialize the orchestrator with all components.
 
@@ -427,7 +427,7 @@ def main():
 
     try:
         # Initialize orchestrator
-        orchestrator = MainOrchestrator()
+        orchestrator = VideoOrchestrator()
 
         if args.mode == "single":
             # Run single generation
@@ -569,7 +569,7 @@ if __name__ == "__main__":
     main()
 
 # Example usage commands:
-# python main.py --mode single                    # Generate one video
-# python main.py --mode continuous --max-iterations 5  # Generate 5 videos
-# python main.py --mode status                    # Check system status
-# python main.py --mode single --verbose          # Verbose logging
+# python videoOrchestrator.py --mode single                    # Generate one video
+# python videoOrchestrator.py --mode continuous --max-iterations 5  # Generate 5 videos
+# python videoOrchestrator.py --mode status                    # Check system status
+# python videoOrchestrator.py --mode single --verbose          # Verbose logging

@@ -1,4 +1,4 @@
-# utils/tts_generator.py
+# components/tts_generator.py
 
 import os
 import logging

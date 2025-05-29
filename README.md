@@ -38,18 +38,18 @@ chmod 777 setup_scripts/*
 
 ### 6. Test the system
 ```bash
-python main.py --mode status
+python videoOrchestrator.py --mode status
 ```
 
 ### 6. Generate your first video
 ```bash
-python main.py --mode single --verbose
+python videoOrchestrator.py --mode single --verbose
 ```
 
 ### 8. Set up cron job for automation
 Add to crontab for every 30 minutes:
 ```bash
-*/30 * * * * cd /path/to/your/project && python main.py --mode single
+*/30 * * * * cd /path/to/your/project && python videoOrchestrator.py --mode single
 ```
 
 ## Sample data/topics.json
@@ -110,10 +110,10 @@ PEXELS_SEARCH_TAGS=dark,computer,coding,technology,abstract,digital,programming,
 crontab -e
 
 # Add this line for every 30 minutes
-*/30 * * * * cd /path/to/youtube-shorts-generator && /usr/bin/python3 main.py --mode single >> logs/cron.log 2>&1
+*/30 * * * * cd /path/to/youtube-shorts-generator && /usr/bin/python3 videoOrchestrator.py --mode single >> logs/cron.log 2>&1
 
 # Or for every hour at minute 0
-0 * * * * cd /path/to/youtube-shorts-generator && /usr/bin/python3 main.py --mode single >> logs/cron.log 2>&1
+0 * * * * cd /path/to/youtube-shorts-generator && /usr/bin/python3 videoOrchestrator.py --mode single >> logs/cron.log 2>&1
 ```
 
 
@@ -150,20 +150,20 @@ Use topics from JSON file with automatic progression.
 
 ```bash
 # Generate one video from topics file
-python main.py --mode single --verbose
+python videoOrchestrator.py --mode single --verbose
 
 # Generate multiple videos
-python main.py --mode continuous --max-iterations 5
+python videoOrchestrator.py --mode continuous --max-iterations 5
 
 # Check system status
-python main.py --mode status
+python videoOrchestrator.py --mode status
 ```
 
 ### Method 2: Direct Data Generation (NEW!)
 Generate videos directly from topic data in your code.
 
 ```python
-from main import MainOrchestrator
+from videoOrchestrator import VideoOrchestrator
 
 # Define your topic
 data = {
@@ -173,7 +173,7 @@ data = {
 }
 
 # Create orchestrator and generate video
-mo = MainOrchestrator.from_topic_data(data)
+mo = VideoOrchestrator.from_topic_data(data)
 result = mo.generate()
 
 # Check result
@@ -230,20 +230,22 @@ for topic_data in topics:
 ## 🛠️ Integration Examples
 
 ### Web API Integration
+
 ```python
 from flask import Flask, request, jsonify
-from main import MainOrchestrator
+from videoOrchestrator import VideoOrchestrator
 
 app = Flask(__name__)
+
 
 @app.route('/generate', methods=['POST'])
 def generate_video():
     data = request.json
-    
+
     try:
-        mo = MainOrchestrator.from_topic_data(data)
+        mo = VideoOrchestrator.from_topic_data(data)
         result = mo.generate()
-        
+
         return jsonify({
             "success": result["success"],
             "video_url": result["video_path"] if result["success"] else None,
@@ -254,15 +256,18 @@ def generate_video():
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
 
+
 if __name__ == '__main__':
     app.run(debug=True)
 ```
 
 ### Queue Processing
+
 ```python
 import queue
 import threading
-from main import MainOrchestrator
+from videoOrchestrator import VideoOrchestrator
+
 
 def video_worker(topic_queue, result_queue):
     """Worker thread for processing video generation."""
@@ -270,15 +275,16 @@ def video_worker(topic_queue, result_queue):
         topic_data = topic_queue.get()
         if topic_data is None:
             break
-        
+
         try:
-            mo = MainOrchestrator.from_topic_data(topic_data)
+            mo = VideoOrchestrator.from_topic_data(topic_data)
             result = mo.generate()
             result_queue.put(result)
         except Exception as e:
             result_queue.put({"success": False, "error": str(e)})
         finally:
             topic_queue.task_done()
+
 
 # Usage
 topic_queue = queue.Queue()
@@ -304,26 +310,28 @@ for i in range(len(topics)):
 
 ```python
 import time
-from main import MainOrchestrator
+from videoOrchestrator import VideoOrchestrator
+
 
 def benchmark_generation(topic_data, runs=3):
     """Benchmark video generation performance."""
     times = []
-    
+
     for i in range(runs):
-        mo = MainOrchestrator.from_topic_data(topic_data)
+        mo = VideoOrchestrator.from_topic_data(topic_data)
         result = mo.generate()
-        
+
         if result["success"]:
             times.append(result["timing"]["total"])
-            print(f"Run {i+1}: {result['timing']['total']:.2f}s")
+            print(f"Run {i + 1}: {result['timing']['total']:.2f}s")
         else:
-            print(f"Run {i+1}: FAILED - {result['error']}")
-    
+            print(f"Run {i + 1}: FAILED - {result['error']}")
+
     if times:
         avg_time = sum(times) / len(times)
         print(f"\nAverage generation time: {avg_time:.2f}s")
         print(f"Min: {min(times):.2f}s, Max: {max(times):.2f}s")
+
 
 # Run benchmark
 topic = {"title": "Test", "description": "Test description..."}

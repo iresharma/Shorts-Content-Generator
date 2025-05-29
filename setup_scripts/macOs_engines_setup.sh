@@ -29,7 +29,7 @@ fi
 
 # Test the system
 echo "🧪 Testing the YouTube Shorts generator..."
-python main.py --mode status
+python videoOrchestrator.py --mode status
 
 echo ""
 echo "🎯 TTS Fix Summary:"

@@ -10,9 +10,10 @@ from typing import Dict, Any
 class ConfigManager:
     """Manages configuration settings, API keys, and file paths for the YouTube Shorts generator."""
 
-    def __init__(self, env_file: str = ".env"):
+    def __init__(self, env_file: str = ".env", pexels_api_key: str = None):
         """Initialize configuration manager."""
         self.env_file = env_file
+        self.pexels_api_key = pexels_api_key
         self._load_environment()
         self._setup_directories()
         self._setup_logging()
@@ -50,6 +51,11 @@ class ConfigManager:
     # API Configuration
     def get_pexels_api_key(self) -> str:
         """Get Pexels API key from environment."""
+        if self.pexels_api_key is not None:
+            print("+" * 60)
+            print(self.pexels_api_key)
+            print("+" * 60)
+            return self.pexels_api_key
         api_key = os.getenv("PEXELS_API_KEY")
         if not api_key:
             raise ValueError("PEXELS_API_KEY not found in environment variables")
