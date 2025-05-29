@@ -27,23 +27,32 @@ Copy the template below and add your Pexels API key
 ### 4. Create topics.json file in data/ directory
 Use the sample below as a starting point
 
-### 5. Test the system
+### 5. Run all scripts in ./setup_scripts
+```bash
+chmod 777 setup_scripts/*
+
+./setup_scripts/CoquiSetup.sh
+....
+....
+```
+
+### 6. Test the system
 ```bash
 python main.py --mode status
 ```
 
-# 6. Generate your first video
+### 6. Generate your first video
 ```bash
 python main.py --mode single --verbose
 ```
 
-# 7. Set up cron job for automation
+### 8. Set up cron job for automation
 Add to crontab for every 30 minutes:
 ```bash
 */30 * * * * cd /path/to/your/project && python main.py --mode single
 ```
 
-### Sample data/topics.json
+## Sample data/topics.json
 ```json
 [
   {
