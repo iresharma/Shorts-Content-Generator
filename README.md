@@ -1,4 +1,4 @@
-# YouTube Shorts Generator - Usage Guide
+# Shorts Content Generator - Usage Guide
 Completely free CPU first youtube shorts generator.
 
 ## Feature
