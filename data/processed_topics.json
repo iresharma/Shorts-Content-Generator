@@ -14,7 +14,8 @@
   {
     "title": "Algorithm",
     "description": "An algorithm is a well-defined, step-by-step set of instructions designed to perform a specific task or solve a particular problem efficiently and correctly. Algorithms form the foundation of computer programming and software development, enabling automation of complex computations and data processing.",
-    "complete": false
+    "complete": true,
+    "completed_at": "2025-05-29T05:21:14.716962"
   },
   {
     "title": "API",

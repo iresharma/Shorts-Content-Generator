@@ -20,7 +20,8 @@
   {
     "title": "API",
     "description": "An Application Programming Interface (API) is a set of protocols, routines, and tools that allow different software applications to communicate and interact with each other. APIs enable integration between systems, facilitate the extension of software functionality, and promote modular and reusable code development.",
-    "complete": false
+    "complete": true,
+    "completed_at": "2025-05-29T05:44:37.657895"
   },
   {
     "title": "Application Software",

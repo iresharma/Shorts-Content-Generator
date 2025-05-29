@@ -98,20 +98,31 @@ class VideoComposer:
             # Extend audio if needed
             final_audio = audio_clip
             if target_duration > audio_duration:
-                # Add silence to match target duration
+                # Add silence to match target duration using pydub
+                from pydub import AudioSegment
                 from moviepy.editor import AudioFileClip
+
                 silence_duration = target_duration - audio_duration
                 logging.info(f"🔇 Adding {silence_duration:.2f}s of silence to audio")
 
-                # Create a silent audio clip
-                import numpy as np
-                silence_array = np.zeros((int(silence_duration * audio_clip.fps), 2))
-                from moviepy.editor import AudioArrayClip
-                silence_clip = AudioArrayClip(silence_array, fps=audio_clip.fps)
+                # Load original audio with pydub
+                audio_segment = AudioSegment.from_mp3(audio_path)
+
+                # Generate silence using the correct pydub method
+                silence_ms = int(silence_duration * 1000)  # Convert to milliseconds
+                silence = AudioSegment.silent(duration=silence_ms)
 
                 # Concatenate audio with silence
-                from moviepy.editor import concatenate_audioclips
-                final_audio = concatenate_audioclips([audio_clip, silence_clip])
+                extended_audio = audio_segment + silence
+
+                # Save extended audio
+                extended_path = Path(self.temp_dir) / f"extended_{int(time.time())}.mp3"
+                extended_audio.export(extended_path, format="mp3")
+
+                # Load the extended audio with moviepy
+                final_audio = AudioFileClip(str(extended_path))
+
+            logging.info(f"🎵 Final audio duration: {final_audio.duration:.2f}s")
 
             # Combine all elements
             logging.info("🎭 Composing final video...")
@@ -169,26 +180,35 @@ class VideoComposer:
             return None
 
     def _validate_images(self, image_paths: List[str]) -> List[str]:
-        """Validate image files and return list of valid ones."""
+        """Validate image files and return list of valid ones with detailed logging."""
         valid_images = []
 
-        for image_path in image_paths:
+        logging.info(f"🔍 Validating {len(image_paths)} images...")
+
+        for i, image_path in enumerate(image_paths):
             try:
                 if not Path(image_path).exists():
-                    logging.warning(f"Image file not found: {image_path}")
+                    logging.warning(f"❌ Image {i + 1} not found: {image_path}")
                     continue
 
                 # Try to open with PIL to validate
                 with Image.open(image_path) as img:
                     if img.size[0] > 100 and img.size[1] > 100:  # Minimum size check
                         valid_images.append(image_path)
+                        logging.debug(f"✅ Image {i + 1} valid: {img.size[0]}x{img.size[1]} - {Path(image_path).name}")
                     else:
-                        logging.warning(f"Image too small: {image_path}")
+                        logging.warning(f"❌ Image {i + 1} too small ({img.size}): {image_path}")
 
             except Exception as e:
-                logging.warning(f"Invalid image {image_path}: {e}")
+                logging.warning(f"❌ Image {i + 1} invalid ({e}): {image_path}")
 
-        logging.info(f"Validated {len(valid_images)} out of {len(image_paths)} images")
+        logging.info(f"✅ Validated {len(valid_images)} out of {len(image_paths)} images")
+
+        if len(valid_images) == 0:
+            logging.error("❌ No valid images found! Cannot create video.")
+        elif len(valid_images) < 3:
+            logging.warning(f"⚠️  Only {len(valid_images)} valid images found. Video quality may be reduced.")
+
         return valid_images
 
     def _create_background_slideshow(self, image_paths: List[str], duration: float) -> Optional[VideoFileClip]:
@@ -310,10 +330,21 @@ class VideoComposer:
                 scale_h = self.height / img_height
                 scale = max(scale_w, scale_h)  # Scale to fill
 
-                # Resize image
+                # Resize image - use proper Pillow resampling method
                 new_width = int(img_width * scale)
                 new_height = int(img_height * scale)
-                img = img.resize((new_width, new_height), Image.Resampling.LANCZOS)
+
+                # Use the correct resampling method for newer Pillow versions
+                try:
+                    # Try new Pillow API first
+                    img = img.resize((new_width, new_height), Image.Resampling.LANCZOS)
+                except AttributeError:
+                    # Fallback for older Pillow versions
+                    try:
+                        img = img.resize((new_width, new_height), Image.LANCZOS)
+                    except AttributeError:
+                        # Final fallback
+                        img = img.resize((new_width, new_height))
 
                 # Center crop to exact dimensions
                 left = (new_width - self.width) // 2
@@ -331,6 +362,7 @@ class VideoComposer:
                 processed_path = Path(self.temp_dir) / f"processed_{int(time.time())}_{Path(image_path).name}"
                 img.save(processed_path, 'JPEG', quality=85)
 
+                logging.debug(f"Successfully processed image: {processed_path}")
                 return str(processed_path)
 
         except Exception as e:
@@ -338,8 +370,11 @@ class VideoComposer:
             return None
 
     def _create_title_overlay(self, title: str, duration: float) -> Optional[TextClip]:
-        """Create title text overlay with enhanced styling and visibility."""
+        """Create title text overlay - with ImageMagick fallback for systems without it."""
         try:
+            # First, let's try without advanced fonts (simple approach)
+            logging.info(f"Creating title overlay for: '{title[:30]}...'")
+
             # Clean and prepare title text
             clean_title = title.strip()
             if len(clean_title) > 40:
@@ -349,108 +384,44 @@ class VideoComposer:
                     mid = len(words) // 2
                     clean_title = ' '.join(words[:mid]) + '\n' + ' '.join(words[mid:])
 
-            # Dynamic font size based on title length and screen width
-            base_font_size = 70
-            if len(clean_title) > 30:
-                font_size = max(50, base_font_size - len(clean_title))
-            else:
-                font_size = base_font_size
-
-            # Try different font options in order of preference
-            font_options = [
-                'Arial-Bold',
-                'Helvetica-Bold',
-                'DejaVu-Sans-Bold',
-                'Liberation-Sans-Bold',
-                None  # System default
-            ]
-
-            title_clip = None
-            for font in font_options:
-                try:
-                    # Create text with enhanced styling
-                    title_clip = TextClip(
-                        clean_title,
-                        fontsize=font_size,
-                        color='white',
-                        font=font,
-                        stroke_color='black',
-                        stroke_width=4,
-                        method='caption',
-                        size=(self.width - 120, None),  # Leave margins on sides
-                        align='center',
-                        interline=-5  # Tighter line spacing for multi-line
-                    )
-                    break  # Success, exit loop
-
-                except Exception as e:
-                    logging.debug(f"Font {font} failed: {e}")
-                    continue
-
-            if not title_clip:
-                # Final fallback - simple text without advanced features
+            # Try simple TextClip first (most compatible)
+            try:
                 title_clip = TextClip(
                     clean_title,
-                    fontsize=font_size,
-                    color='white'
+                    fontsize=60,
+                    color='white',
+                    bg_color='black',
+                    size=(self.width - 100, None)
                 )
 
-            # Position title at the top with padding
-            title_height = title_clip.h if hasattr(title_clip, 'h') else 100
-            y_position = 60  # Top padding
+                # Position and set duration
+                title_clip = title_clip.set_position(('center', 80))
+                title_clip = title_clip.set_duration(duration)
 
-            # Ensure title doesn't go off screen
-            if y_position + title_height > self.height * 0.3:
-                y_position = 30
-                # Make font smaller if still too big
-                if title_height > self.height * 0.25:
-                    font_size = int(font_size * 0.7)
-                    title_clip = TextClip(
-                        clean_title,
-                        fontsize=font_size,
-                        color='white',
-                        stroke_color='black',
-                        stroke_width=3
-                    )
+                logging.info("✅ Created simple title overlay successfully")
+                return title_clip
 
-            # Set position and duration
-            title_clip = title_clip.set_position(('center', y_position))
-            title_clip = title_clip.set_duration(duration)
+            except Exception as e:
+                logging.warning(f"Simple TextClip failed: {e}")
 
-            # Enhanced visibility effects
-            # Add semi-transparent background box for better readability
-            from moviepy.editor import ColorClip
-            bg_height = title_clip.h + 40 if hasattr(title_clip, 'h') else 120
-            bg_clip = ColorClip(
-                size=(self.width, bg_height),
-                color=(0, 0, 0),  # Black background
-                duration=duration
-            ).set_opacity(0.6).set_position((0, y_position - 20))
+                # If TextClip fails completely, create a colored rectangle as placeholder
+                logging.info("Creating title placeholder (text overlay not available)")
 
-            # Combine background and text
-            title_with_bg = CompositeVideoClip([bg_clip, title_clip])
+                # Create a simple colored rectangle as a title placeholder
+                from moviepy.editor import ColorClip
+                title_bg = ColorClip(
+                    size=(self.width, 120),
+                    color=(0, 0, 0),  # Black background
+                    duration=duration
+                ).set_position((0, 60)).set_opacity(0.7)
 
-            # Add fade effects for smooth appearance
-            title_with_bg = title_with_bg.fadeout(1.0).fadein(1.0)
-
-            logging.info(f"Created enhanced title overlay: '{clean_title[:30]}...' at position (center, {y_position})")
-            return title_with_bg
+                logging.info("Created title placeholder rectangle")
+                return title_bg
 
         except Exception as e:
-            logging.error(f"Error creating title overlay: {e}")
-            # Emergency fallback
-            try:
-                simple_title = TextClip(
-                    title[:30],  # Truncate if too long
-                    fontsize=50,
-                    color='white'
-                ).set_position(('center', 50)).set_duration(duration)
-
-                logging.info("Created simple fallback title overlay")
-                return simple_title
-            except Exception as e2:
-                logging.error(f"Even simple title overlay failed: {e2}")
-                return None
+            logging.error(f"All title overlay methods failed: {e}")
+            logging.info("Video will be created without title overlay")
+            return None
 
     def _compose_final_video(self, background: VideoFileClip, title: Optional[TextClip],
                              audio: AudioFileClip) -> Optional[CompositeVideoClip]:
