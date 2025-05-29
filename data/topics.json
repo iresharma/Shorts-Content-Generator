@@ -26,7 +26,8 @@
   {
     "title": "Application Software",
     "description": "Application software refers to programs designed to perform specific user-oriented tasks such as word processing, web browsing, or database management. These software applications provide direct utility to end users by enabling them to accomplish particular functions or solve domain-specific problems.",
-    "complete": false
+    "complete": true,
+    "completed_at": "2025-05-29T06:00:59.861087"
   },
   {
     "title": "Architecture",
